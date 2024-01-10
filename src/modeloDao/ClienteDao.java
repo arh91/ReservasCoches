@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -139,6 +140,26 @@ public class ClienteDao {
 			JOptionPane.showMessageDialog(null, "No existe ningún cliente con éste código en nuestra base de datos.","Error",JOptionPane.ERROR_MESSAGE);
 		}
 	}
+	
+	
+	public void cargarListaClientes(DefaultListModel clientesListModel){
+		Conexion conex = new Conexion();
+        try {
+        	String consulta = "SELECT clCodigo FROM clientes";
+        	PreparedStatement ps = conex.getConnection().prepareStatement(consulta);
+        	ResultSet res = ps.executeQuery();
+            while (res.next()) {
+                String codigo = res.getString("clCodigo");
+                clientesListModel.addElement(codigo);
+            }
+            res.close();
+            conex.desconectar();
+        } catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Error, no se han podido obtener los datos");
+			System.out.println(e);
+		}
+    }
+
 
 
 	public void modificarCliente (Cliente cliente, String codigo) {

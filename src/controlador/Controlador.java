@@ -139,6 +139,10 @@ public class Controlador {
 		clienteDao.buscarCliente(cliente, codigo);
 	}
 	
+	public void cargarListaClientes(DefaultListModel clientesListModel) {
+		clienteDao.cargarListaClientes(clientesListModel);
+	}
+	
 	public void eliminarCliente(String codigo) {
 		clienteDao.eliminarCliente(codigo);
 	}
@@ -163,8 +167,8 @@ public class Controlador {
 		reservaDao.buscarReserva(reservaCompleta, codigo);
 	}
 	
-	public void cargarListaReservas(DefaultListModel reservaListModel) {
-		reservaDao.cargarListaReservas(reservaListModel);
+	public void cargarListaReservas(DefaultListModel reservasListModel) {
+		reservaDao.cargarListaReservas(reservasListModel);
 	}
 
 	public void modificarReserva(Reserva reserva, int codigo){

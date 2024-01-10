@@ -226,10 +226,10 @@ public class Form02NuevaReserva extends JFrame {
 				btnAtras.setActionCommand("Cancel");
 				buttonPane.add(btnAtras);
 			}
-			JButton btnModificar = new JButton("Modificar");
-			btnModificar.addActionListener(new ModificarButtonActionListener());
-			btnModificar.setBounds(700, 22, 100, 25);
-			contentPanel.add(btnModificar);
+			JButton btnMasOpcionesReserva = new JButton("Mas Opciones");
+			btnMasOpcionesReserva.addActionListener(new MasOpcionesButtonActionListener());
+			btnMasOpcionesReserva.setBounds(700, 22, 100, 25);
+			contentPanel.add(btnMasOpcionesReserva);
 		}
 	}
 
@@ -294,10 +294,10 @@ public class Form02NuevaReserva extends JFrame {
 		}
 	}
 
-	private class ModificarButtonActionListener implements ActionListener {
+	private class MasOpcionesButtonActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
 			dispose();
-			controlador.mostrarF11ModificarReservas();
+			controlador.mostrarF07MasOpcionesReserva();
 		}
 	}
 

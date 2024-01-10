@@ -3,11 +3,17 @@ package vista;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Date;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -16,9 +22,15 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import controlador.Controlador;
+import modeloVo.Involucra;
 import modeloVo.Reserva;
 import modeloVo.ReservaCompleta;
 
+/*import vista.Form02NuevaReserva.AtrasButtonActionListener;
+import vista.Form02NuevaReserva.CancelButtonActionListener;
+import vista.Form02NuevaReserva.MasOpcionesButtonActionListener;
+import vista.Form02NuevaReserva.OkButtonActionListener;
+*/
 public class Form11DetallesReserva extends JFrame{
 	static String codigo;
 	
@@ -146,6 +158,51 @@ public class Form11DetallesReserva extends JFrame{
 		comboBox_Clientes = new ModeloComboClientes();
 		comboBox_Clientes.setBounds(101, 22, 196, 20);
 		contentPanel.add(comboBox_Clientes);
+		
+		{
+			JPanel buttonPane = new JPanel();
+			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+			getContentPane().add(buttonPane, BorderLayout.SOUTH);
+			{
+				JButton btnEliminar = new JButton("Eliminar Reserva");
+				btnEliminar.addActionListener(new DeleteButtonActionListener());
+				btnEliminar.setActionCommand("OK");
+				buttonPane.add(btnEliminar);
+
+				JButton btnModificar = new JButton("Cancelar Reserva");
+				btnModificar.addActionListener(new ModifyButtonActionListener());
+				btnModificar.setActionCommand("Cancel");
+				buttonPane.add(btnModificar);
+				getRootPane().setDefaultButton(btnEliminar);
+			}
+			{
+				JButton btnAtras = new JButton("Atras");
+				btnAtras.addActionListener(new AtrasButtonActionListener());
+				btnAtras.setActionCommand("Cancel");
+				buttonPane.add(btnAtras);
+			}
+		}
+	}
+	
+	
+	private class DeleteButtonActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent arg0) {
+			
+		}
+	}
+
+	private class ModifyButtonActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent arg0) {
+			
+			}
+		}
+
+
+	private class AtrasButtonActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent arg0) {
+			dispose();
+			controlador.mostrarF07MasOpcionesReserva();
+		}
 	}
 	
 	

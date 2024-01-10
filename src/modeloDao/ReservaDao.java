@@ -154,7 +154,7 @@ public class ReservaDao {
 	}
 	
 	
-	public void cargarListaReservas(DefaultListModel reservaListModel){
+	public void cargarListaReservas(DefaultListModel reservasListModel){
 		Conexion conex = new Conexion();
         try {
         	String consulta = "SELECT reCodigo FROM reservas";
@@ -162,7 +162,7 @@ public class ReservaDao {
         	ResultSet res = ps.executeQuery();
             while (res.next()) {
                 String codigo = res.getString("reCodigo");
-                reservaListModel.addElement(codigo);
+                reservasListModel.addElement(codigo);
             }
             res.close();
             conex.desconectar();

@@ -92,7 +92,7 @@ public class ReservaDao {
 			}
 	}
 
-	public void buscarReserva (Reserva reserva, int codigo) {
+	/*public void buscarReserva (Reserva reserva, int codigo) {
 		Conexion conex= new Conexion();
 		boolean existe=false;
 		try {
@@ -105,6 +105,42 @@ public class ReservaDao {
 				reserva.setCodigo(res.getInt("reCodigo"));
 				reserva.setFecInicio(res.getDate("reFecInicio"));
 				reserva.setFecFinal(res.getDate("reFecFinal"));
+			}
+			res.close();
+			conex.desconectar();
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Error, no se han podido obtener los datos");
+			System.out.println(e);
+		}
+		if (!existe) {
+			JOptionPane.showMessageDialog(null, "No existe ninguna reserva con éste código en nuestra base de datos.","Error",JOptionPane.ERROR_MESSAGE);
+		}
+	}*/
+	
+	
+	public void buscarReserva (ReservaCompleta reserva, int codigo) {
+		Conexion conex= new Conexion();
+		boolean existe=false;
+		try {
+			String consulta = "SELECT inMatricula, inReserva, inLitros, reFecInicio, reFecFinal, clNombre, coMarca, coModelo, coColor, coPrecio  FROM involucra "+
+							  "JOIN reservas ON inReserva = reCodigo "+
+					          "JOIN coches ON inMatricula = coMatricula "+
+					          "WHERE inReserva = ?";
+			PreparedStatement ps = conex.getConnection().prepareStatement(consulta);
+			ps.setInt(1, codigo);
+			ResultSet res = ps.executeQuery();
+			while(res.next()){
+				existe=true;
+				reserva.setMatriculaCoche(res.getString("inMatricula"));
+				reserva.setCodigoReserva(res.getInt("inReserva"));
+				reserva.setLitrosGasolina(res.getInt("inLitros"));
+				reserva.setFecInicioReserva(res.getDate("reFecInicio"));
+				reserva.setFecFinalReserva(res.getDate("reFecFinal"));
+				reserva.setNombreCliente(res.getString("clNombre"));
+				reserva.setMarcaCoche(res.getString("coMarca"));
+				reserva.setModeloCoche(res.getString("coModelo"));
+				reserva.setColorCoche(res.getString("coColor"));
+				reserva.setPrecioCoche(res.getInt("coPrecio"));
 			}
 			res.close();
 			conex.desconectar();

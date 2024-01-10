@@ -16,6 +16,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import controlador.Controlador;
+import modeloVo.Reserva;
+import modeloVo.ReservaCompleta;
 
 public class Form11DetallesReserva extends JFrame{
 	static String codigo;
@@ -33,7 +35,7 @@ public class Form11DetallesReserva extends JFrame{
 	private ModeloComboClientes comboBox_Clientes;
 	private ModeloComboCoches comboBox_Coches;
 
-	private int codigoReserva;
+	private String codigoReserva;
 	private Date fechaInicio;
 	private Date fechaFinal;
 	private int litros;
@@ -65,6 +67,7 @@ public class Form11DetallesReserva extends JFrame{
 	 * Create the application.
 	 */
 	public Form11DetallesReserva(String codigo) {
+		this.codigoReserva = codigo;
 		initialize();
 	}
 
@@ -147,7 +150,10 @@ public class Form11DetallesReserva extends JFrame{
 	
 	
 	public void mostrarDatos() {
-		Reserva reserva = new Reserva();
+		int codigo = Integer.parseInt(codigoReserva);
+		ReservaCompleta reservaCompleta = new ReservaCompleta();
+		controlador.buscarReserva(reservaCompleta, codigo);
+		
 		
 	}
 

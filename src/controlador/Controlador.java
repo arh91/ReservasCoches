@@ -17,7 +17,7 @@ import modeloVo.FilaCliente;
 import modeloVo.FilaReserva;
 import modeloVo.Involucra;
 import modeloVo.Reserva;
-
+import modeloVo.ReservaCompleta;
 import vista.*;
 
 public class Controlador {
@@ -159,8 +159,8 @@ public class Controlador {
 		reservaDao.eliminarReserva(codigo);
 	}
 
-	public void buscarReserva(Reserva reserva, int codigo){
-		reservaDao.buscarReserva(reserva, codigo);
+	public void buscarReserva(ReservaCompleta reservaCompleta, int codigo){
+		reservaDao.buscarReserva(reservaCompleta, codigo);
 	}
 	
 	public void cargarListaReservas(DefaultListModel reservaListModel) {

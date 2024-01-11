@@ -25,13 +25,18 @@ public class ReservaDao {
 		java.sql.Date fecInicioSql = new java.sql.Date(fecInicio.getTime());
 		java.sql.Date fecFinalSql = new java.sql.Date(fecFinal.getTime());
 
-		Conexion conex= new Conexion();
+		
+		Conexion conex= null;
+		PreparedStatement ps = null;
+		PreparedStatement ps1 = null;
+		PreparedStatement ps2 = null;
 
 		String comprobarCodigosBD = "SELECT * FROM reservas WHERE reCodigo = ?";
 		String comprobarCodigosHistorial = "SELECT * FROM historialReservas WHERE reCodigo = ?";
 		String consulta = "INSERT INTO reservas VALUES (?, ?, ?)";
 		try {
-			PreparedStatement ps = conex.getConnection().prepareStatement(comprobarCodigosBD);
+			conex = new Conexion();
+			ps = conex.getConnection().prepareStatement(comprobarCodigosBD);
 			ps.setInt(1, codigo);
 			ResultSet resultSet=ps.executeQuery();
 			if(resultSet.next()) {
@@ -40,7 +45,7 @@ public class ReservaDao {
 				existe = false;
 			}
 
-			PreparedStatement ps2 = conex.getConnection().prepareStatement(comprobarCodigosHistorial);
+			ps2 = conex.getConnection().prepareStatement(comprobarCodigosHistorial);
 			ps2.setInt(1, codigo);
 			ResultSet rs2=ps2.executeQuery();
 			if(rs2.next()) {
@@ -54,41 +59,63 @@ public class ReservaDao {
 				return;
 			}
 
-			PreparedStatement ps1 = conex.getConnection().prepareStatement(consulta);
+			ps1 = conex.getConnection().prepareStatement(consulta);
 			ps1.setInt(1, codigo);
 			ps1.setDate(2, fecInicioSql);
 			ps1.setDate(3, fecFinalSql);
 			int filas = ps1.executeUpdate();
 			JOptionPane.showMessageDialog(null, "Se han guardado los datos correctamente","Información",JOptionPane.INFORMATION_MESSAGE);
-			ps1.close();
-			conex.desconectar();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 			JOptionPane.showMessageDialog(null, "Error, no se han podido guardar los datos");
+		} finally {
+			try {
+				if(ps!=null) {
+					ps.close();
+				}
+				if(ps1!=null) {
+					ps1.close();
+				}
+				if(ps2!=null) {
+					ps2.close();
+				}
+				if (conex!=null){
+					conex.desconectar();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
 
 	public void eliminarReserva (int codigo){
-		/*int res = JOptionPane.showOptionDialog(new JFrame(), "¿Estás seguro que desea cancelar la reserva?", "Options",
-				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
-				new Object[] { "Sí, estoy seguro", "Volver atrás" }, JOptionPane.YES_OPTION);
-
-		if (res == JOptionPane.YES_OPTION) {
-			Conexion conex= new Conexion();*/
+			Conexion conex = null;
+			PreparedStatement ps = null;
 			try {
-				Conexion conex= new Conexion();
+				conex= new Conexion();
 				String consulta = "DELETE FROM reservas WHERE reCodigo= ?";
-				PreparedStatement ps = null;
 				ps = conex.getConnection().prepareStatement(consulta);
 				ps.setInt(1, codigo);
 				ps.executeUpdate();
 				//JOptionPane.showMessageDialog(null, " La reserva se ha cancelado Correctamente","Información",JOptionPane.INFORMATION_MESSAGE);
-				ps.close();
-				conex.desconectar();
 			} catch (SQLException e) {
 				System.out.println(e.getMessage());
-				JOptionPane.showMessageDialog(null, "Error, no se pudo cancelar la reserva");
+				//JOptionPane.showMessageDialog(null, "Error, no se pudo cancelar la reserva");
+			}
+			finally {
+				try {
+					if(ps!=null) {
+						ps.close();
+					}
+					if (conex!=null){
+						conex.desconectar();
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 	}
 
@@ -119,14 +146,16 @@ public class ReservaDao {
 	
 	
 	public void buscarReserva (ReservaCompleta reserva, int codigo) {
-		Conexion conex= new Conexion();
+		Conexion conex= null;
+		PreparedStatement ps = null;
 		boolean existe=false;
 		try {
+			conex = new Conexion();
 			String consulta = "SELECT inMatricula, inReserva, inLitros, reFecInicio, reFecFinal, clNombre, coMarca, coModelo, coColor, coPrecio  FROM involucra "+
 							  "JOIN reservas ON inReserva = reCodigo "+
 					          "JOIN coches ON inMatricula = coMatricula "+
 					          "WHERE inReserva = ?";
-			PreparedStatement ps = conex.getConnection().prepareStatement(consulta);
+			ps = conex.getConnection().prepareStatement(consulta);
 			ps.setInt(1, codigo);
 			ResultSet res = ps.executeQuery();
 			while(res.next()){
@@ -142,33 +171,52 @@ public class ReservaDao {
 				reserva.setColorCoche(res.getString("coColor"));
 				reserva.setPrecioCoche(res.getInt("coPrecio"));
 			}
-			res.close();
-			conex.desconectar();
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Error, no se han podido obtener los datos");
 			System.out.println(e);
-		}
-		if (!existe) {
-			JOptionPane.showMessageDialog(null, "No existe ninguna reserva con éste código en nuestra base de datos.","Error",JOptionPane.ERROR_MESSAGE);
+		} finally {
+			try {
+				if(ps!=null) {
+					ps.close();
+				}
+				if (conex!=null){
+					conex.desconectar();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
 	
 	public void cargarListaReservas(DefaultListModel reservasListModel){
-		Conexion conex = new Conexion();
+		Conexion conex = null;
+		PreparedStatement ps = null;
         try {
+        	conex = new Conexion();
         	String consulta = "SELECT reCodigo FROM reservas";
-        	PreparedStatement ps = conex.getConnection().prepareStatement(consulta);
+        	ps = conex.getConnection().prepareStatement(consulta);
         	ResultSet res = ps.executeQuery();
             while (res.next()) {
                 String codigo = res.getString("reCodigo");
                 reservasListModel.addElement(codigo);
             }
-            res.close();
-            conex.desconectar();
         } catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Error, no se han podido obtener los datos");
 			System.out.println(e);
+		}finally {
+			try {
+				if(ps!=null) {
+					ps.close();
+				}
+				if (conex!=null){
+					conex.desconectar();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
     }
 
@@ -177,15 +225,17 @@ public class ReservaDao {
 
 
 	public void modificarReserva (Reserva reserva, int codigo) {
-		Conexion conex= new Conexion();
+		Conexion conex= null;
+		PreparedStatement ps = null;
 		Date fecInicio = new Date(reserva.getFecInicio().getTime());
 		Date fecFinal = new Date(reserva.getFecFinal().getTime());
 		java.sql.Date fecInicioSql = new java.sql.Date(fecInicio.getTime());
 		java.sql.Date fecFinalSql = new java.sql.Date(fecFinal.getTime());
 
 		try{
+			conex= new Conexion();
 			String consulta="UPDATE reservas SET reCodigo = ? ,reFecInicio = ? , reFecFinal = ? WHERE reCodigo = ? ";
-			PreparedStatement ps = conex.getConnection().prepareStatement(consulta);
+			ps = conex.getConnection().prepareStatement(consulta);
 			ps.setInt(1, reserva.getCodigo());
 			ps.setDate(2, fecInicioSql);
 			ps.setDate(3, fecFinalSql);
@@ -194,68 +244,120 @@ public class ReservaDao {
 		}catch(SQLException e){
 			System.out.println(e);
 			JOptionPane.showMessageDialog(null, "Error al modificar los datos","Error",JOptionPane.ERROR_MESSAGE);
+		}finally {
+			try {
+				if(ps!=null) {
+					ps.close();
+				}
+				if (conex!=null){
+					conex.desconectar();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
-	public void moverAHistorial() throws SQLException {
-		Conexion conex= new Conexion();
-
-		String consulta = "INSERT INTO historialReservas "+
-		"SELECT * FROM Reservas "+
-		"WHERE reFecFinal < CURDATE()";
-
-		String consulta2 = "INSERT INTO historialInvolucra "+
-				"SELECT * FROM Involucra "+
-				"WHERE inReserva IN "+
-				"(SELECT reCodigo FROM Reservas "+
-				"WHERE reFecFinal < CURDATE())";
-		String consulta3 = "DELETE FROM Involucra WHERE inReserva IN(SELECT reCodigo FROM Reservas WHERE reFecFinal < CURDATE())";
-		String consulta4 = "DELETE FROM Reservas WHERE reFecFinal < CURDATE()";
-
+	public void moverAHistorial(){
+		Conexion conex = null;
 		PreparedStatement ps = null;
-		ps = conex.getConnection().prepareStatement(consulta);
 		PreparedStatement ps2 = null;
-		ps2 = conex.getConnection().prepareStatement(consulta2);
 		PreparedStatement ps3 = null;
-		ps3 = conex.getConnection().prepareStatement(consulta3);
 		PreparedStatement ps4 = null;
-		ps4 = conex.getConnection().prepareStatement(consulta4);
+		try {
+			conex= new Conexion();
+	
+			String consulta = "INSERT INTO historialReservas "+
+			"SELECT * FROM Reservas "+
+			"WHERE reFecFinal < CURDATE()";
+	
+			String consulta2 = "INSERT INTO historialInvolucra "+
+					"SELECT * FROM Involucra "+
+					"WHERE inReserva IN "+
+					"(SELECT reCodigo FROM Reservas "+
+					"WHERE reFecFinal < CURDATE())";
+			String consulta3 = "DELETE FROM Involucra WHERE inReserva IN(SELECT reCodigo FROM Reservas WHERE reFecFinal < CURDATE())";
+			String consulta4 = "DELETE FROM Reservas WHERE reFecFinal < CURDATE()";
 
-		ps.executeUpdate();
-		ps2.executeUpdate();
-		ps3.executeUpdate();
-		ps4.executeUpdate();
-
-		ps.close();
-		ps2.close();
-		ps3.close();
-		ps4.close();
-		
-		conex.desconectar();
+			ps = conex.getConnection().prepareStatement(consulta);
+			ps2 = conex.getConnection().prepareStatement(consulta2);		
+			ps3 = conex.getConnection().prepareStatement(consulta3);			
+			ps4 = conex.getConnection().prepareStatement(consulta4);
+			
+			ps.executeUpdate();
+			ps2.executeUpdate();
+			ps3.executeUpdate();
+			ps4.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if(ps!=null) {
+					ps.close();
+				}
+				if(ps2!=null) {
+					ps2.close();
+				}
+				if(ps3!=null) {
+					ps3.close();
+				}
+				if(ps4!=null) {
+					ps4.close();
+				}
+				if (conex!=null){
+					conex.desconectar();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
+	
 
-	public void eliminarReservasAntiguas() throws SQLException {
-		Conexion conex= new Conexion();
-
-		String consulta = "DELETE FROM historialInvolucra WHERE inReserva IN(SELECT reCodigo FROM historialReservas WHERE reFecFinal < DATE_SUB(NOW(), INTERVAL 5 YEAR))";
-		String consulta2 = "DELETE FROM historialReservas WHERE reFecFinal < DATE_SUB(NOW(), INTERVAL 5 YEAR)";
-
+	public void eliminarReservasAntiguas(){
+		Conexion conex = null;
 		PreparedStatement ps = null;
-		ps = conex.getConnection().prepareStatement(consulta);
 		PreparedStatement ps2 = null;
-		ps2 = conex.getConnection().prepareStatement(consulta2);
-
-		ps.executeUpdate();
-		ps2.executeUpdate();
-
-		ps.close();
-		ps2.close();
-		conex.desconectar();
+		
+		try {
+			conex= new Conexion();
+	
+			String consulta = "DELETE FROM historialInvolucra WHERE inReserva IN(SELECT reCodigo FROM historialReservas WHERE reFecFinal < DATE_SUB(NOW(), INTERVAL 5 YEAR))";
+			String consulta2 = "DELETE FROM historialReservas WHERE reFecFinal < DATE_SUB(NOW(), INTERVAL 5 YEAR)";
+	
+			ps = conex.getConnection().prepareStatement(consulta);
+			ps2 = conex.getConnection().prepareStatement(consulta2);
+	
+			ps.executeUpdate();
+			ps2.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if(ps!=null) {
+					ps.close();
+				}
+				if(ps2!=null) {
+					ps2.close();
+				}
+				if (conex!=null){
+					conex.desconectar();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 
 	public boolean comprobarDisponibilidadVehiculo(String matricula, java.sql.Date fechaInicioDate, java.sql.Date fechaFinDate) {
-		Conexion conexion = new Conexion();
+		Conexion conexion = null;
 		int contador=0;
 
 		String consulta = "select reFecInicio, reFecFinal"
@@ -266,6 +368,7 @@ public class ReservaDao {
 		ResultSet rs = null;
 
 		try {
+			conexion = new Conexion();
 			ps = conexion.getConnection().prepareStatement(consulta);
 			ps.setString(1, matricula);
 
@@ -297,8 +400,19 @@ public class ReservaDao {
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if(ps!=null) {
+					ps.close();
+				}
+				if (conexion!=null){
+					conexion.desconectar();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		conexion.desconectar();
 		if(contador==0){
 			return true;
 		}else{
@@ -308,7 +422,7 @@ public class ReservaDao {
 
 
 	public ArrayList<FilaReserva> ReservasMes(int mes) {
-		Conexion conexion = new Conexion();
+		Conexion conexion = null;
 
 		String consulta = "select clNombre, inMatricula, coPrecio, DateDiff(reFecFinal, reFecInicio), coPrecio*DateDiff(reFecFinal, reFecInicio)"
 				+" from Involucra join Clientes on inCliente = clNif"
@@ -322,6 +436,7 @@ public class ReservaDao {
 		ArrayList <FilaReserva> reserva = new ArrayList<FilaReserva>();
 
 		try {
+			conexion = new Conexion();
 			ps = conexion.getConnection().prepareStatement(consulta);
 			ps.setInt(1, mes);
 			rs = ps.executeQuery();
@@ -341,13 +456,25 @@ public class ReservaDao {
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
-		conexion.desconectar();
+		finally {
+			try {
+				if(ps!=null) {
+					ps.close();
+				}
+				if (conexion!=null){
+					conexion.desconectar();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return reserva;
 	}
 	
 	
 	public ArrayList<FilaReserva> HistorialReservasMes(int mes, int anho) {
-		Conexion conexion = new Conexion();
+		Conexion conexion = null;
 
 		String consulta = "select clNombre, inMatricula, coPrecio, DateDiff(reFecFinal, reFecInicio), coPrecio*DateDiff(reFecFinal, reFecInicio)"
 				+" from historialInvolucra join Clientes on inCliente = clNif"
@@ -361,6 +488,7 @@ public class ReservaDao {
 		ArrayList <FilaReserva> reserva = new ArrayList<FilaReserva>();
 
 		try {
+			conexion = new Conexion();
 			ps = conexion.getConnection().prepareStatement(consulta);
 			ps.setInt(1, mes);
 			ps.setInt(2,  anho);
@@ -381,8 +509,19 @@ public class ReservaDao {
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if(ps!=null) {
+					ps.close();
+				}
+				if (conexion!=null){
+					conexion.desconectar();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		conexion.desconectar();
 		return reserva;
 	}
 	

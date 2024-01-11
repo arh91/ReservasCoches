@@ -202,6 +202,10 @@ public class Controlador {
 	public void eliminarInvolucra(int codigo) throws SQLException {
 		involucraDao.eliminarInvolucra(codigo);
 	}
+	
+	public void modificarInvolucra(Involucra involucra, int codigo) {
+		involucraDao.modificarInvolucra(involucra, codigo);
+	}
 
 	public void obtenerCodigoReserva(Involucra involucra, String matricula){
 		involucraDao.obtenerCodigoReserva(involucra, matricula);

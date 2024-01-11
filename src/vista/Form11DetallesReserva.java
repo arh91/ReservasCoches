@@ -25,6 +25,7 @@ import controlador.Controlador;
 import modeloVo.Involucra;
 import modeloVo.Reserva;
 import modeloVo.ReservaCompleta;
+import validaciones.ConvertirFechas;
 
 /*import vista.Form02NuevaReserva.AtrasButtonActionListener;
 import vista.Form02NuevaReserva.CancelButtonActionListener;
@@ -51,6 +52,13 @@ public class Form11DetallesReserva extends JFrame{
 	private Date fechaInicio;
 	private Date fechaFinal;
 	private int litros;
+	private String matriculaCoche;
+	private String nifInvolucra;
+	
+	private String fechaInicioModificada;
+	private String fechaFinModificada;
+	
+	ConvertirFechas convertirFechas = new ConvertirFechas();
 	
 	public void setControlador(Controlador controlador) {
 		this.controlador = controlador;
@@ -188,13 +196,45 @@ public class Form11DetallesReserva extends JFrame{
 	
 	private class DeleteButtonActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
-			
+			int codigoReserva = Integer.parseInt(codigo);
+			try {
+				controlador.eliminarInvolucra(codigoReserva);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			controlador.eliminarReserva(codigoReserva);
 		}
 	}
 
 	private class ModifyButtonActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
+			Involucra involucra = new Involucra();
+			Reserva reserva = new Reserva();
+			Involucra(involucra);
+			Reserva(reserva);
 			
+			java.sql.Date fechaInicioSql = new java.sql.Date(fechaInicio.getTime());
+			java.sql.Date fechaFinalSql = new java.sql.Date(fechaFinal.getTime());
+			LocalDate inicioReserva = fechaInicioSql.toLocalDate();
+			LocalDate finReserva = fechaFinalSql.toLocalDate();
+
+			if(inicioReserva.isBefore(todaysDate)){
+				JOptionPane.showMessageDialog(null, "Error: La fecha de inicio de la reserva no puede ser anterior a la fecha de hoy.","Información",JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
+			if(inicioReserva.isAfter(finReserva)){
+				JOptionPane.showMessageDialog(null, "Error: La fecha de fin de la reserva no puede ser anterior a la fecha de inicio.","Información",JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
+
+			if(controlador.comprobarDisponibilidadVehiculo(matriculaCoche, fechaInicioSql, fechaFinalSql)==false){
+				JOptionPane.showMessageDialog(null, "Lo sentimos, el coche seleccionado no se encuentra disponible para las fechas que usted ha seleccionado.");
+			}else {
+				int codReserva = reserva.getCodigo();
+				controlador.modificarInvolucra(involucra, codReserva);
+				controlador.modificarReserva(reserva, codReserva);
+			}
 			}
 		}
 
@@ -209,6 +249,10 @@ public class Form11DetallesReserva extends JFrame{
 	
 	public void mostrarDatos() {
 		System.out.println("Código reserva: "+codigo);
+		
+		
+		
+		textCodReserva.setEnabled(false);
 		/*int codigo = Integer.parseInt(codigoReserva);
 		ReservaCompleta reservaCompleta = new ReservaCompleta();
 		controlador.buscarReserva(reservaCompleta, codigo);
@@ -228,6 +272,83 @@ public class Form11DetallesReserva extends JFrame{
 		textFecFinal.setText(fecFinalReserva);
 		textCodReserva.setText(codigoReserva);
 		textLitros.setText(litrosGasolina);*/
+	}
+	
+	
+	private void Reserva(Reserva reserva) {
+		int codReserva = Integer.parseInt(textCodReserva.getText());
+
+		modificarFechaInicio();
+		modificarFechaFin();
+
+		fechaInicio = convertirFechas.convertirStringDate(fechaInicioModificada);
+		fechaFinal = convertirFechas.convertirStringDate(fechaFinModificada);
+
+		reserva.setCodigo(codReserva);
+		reserva.setFecInicio(fechaInicio);
+		reserva.setFecFinal(fechaFinal);
+	}
+
+	private void Involucra(Involucra involucra) {
+		String infoCoche = String.valueOf(comboBox_Coches.getSelectedItem());
+		String[] arrCoche = infoCoche.split("  ");
+		matriculaCoche = arrCoche[0];
+
+		String infoCliente = String.valueOf(comboBox_Clientes.getSelectedItem());
+		String[] arrCliente = infoCliente.split("  ");
+		nifInvolucra = arrCliente[0];
+
+		int codReserva = Integer.parseInt(textCodReserva.getText());
+		litros = Integer.parseInt(textLitros.getText());
+
+		/*System.out.println("MATRÍCULA: "+matriculaCoche);
+		System.out.println("DNI CLIENTE: "+nifInvolucra);
+		System.out.println("CÓDIGO RESERVA: "+codigoReserva);
+		System.out.println("LITROS: "+litros);*/
+
+		involucra.setMatricula(matriculaCoche);
+		involucra.setCliente(nifInvolucra);
+		involucra.setReserva(codReserva);
+		involucra.setLitros(litros);
+	}
+	
+	private void modificarFechaInicio(){
+		fechaInicioModificada = textFecInicial.getText();
+		String[] arrFecInicial = fechaInicioModificada.split("/");
+		String[] arrFecInicialModificado = new String[3];
+		System.out.println(arrFecInicial[0]);
+		System.out.println(arrFecInicial[1]);
+		System.out.println(arrFecInicial[2]);
+		int j=0;
+		for(int i= arrFecInicial.length-1; i>=0; i--){
+
+			arrFecInicialModificado[j] = arrFecInicial[i];
+			j++;
+		}
+
+		String diaInicio = String.valueOf(arrFecInicialModificado[2]);
+		String mesInicio = String.valueOf(arrFecInicialModificado[1]);
+		String anhoInicio = String.valueOf(arrFecInicialModificado[0]);
+
+		fechaInicioModificada = anhoInicio+"-"+mesInicio+"-"+diaInicio;
+	}
+
+	private void modificarFechaFin(){
+		fechaFinModificada = textFecFinal.getText();
+		String[] arrFecFinal = fechaFinModificada.split("/");
+		String[] arrFecFinalModificado = new String[3];
+
+		int k=0;
+		for(int i=arrFecFinal.length-1; i>=0; i--){
+			arrFecFinalModificado[k] = arrFecFinal[i];
+			k++;
+		}
+
+		String diaFin = String.valueOf(arrFecFinalModificado[2]);
+		String mesFin = String.valueOf(arrFecFinalModificado[1]);
+		String anhoFin = String.valueOf(arrFecFinalModificado[0]);
+
+		fechaFinModificada = anhoFin+"-"+mesFin+"-"+diaFin;
 	}
 
 }

@@ -76,8 +76,9 @@ public class Form07MasOpcionesReserva extends JFrame {
             if (!e.getValueIsAdjusting()) {
                 String selectedCodigo = reservasList.getSelectedValue();
                 if (selectedCodigo != null) {
+                	Form11DetallesReserva detallesReserva = new Form11DetallesReserva(selectedCodigo);
                 	dispose();
-                    controlador.mostrarF11DetallesReserva(selectedCodigo);
+                	detallesReserva.setVisible(true);             
                 }
             }
         });

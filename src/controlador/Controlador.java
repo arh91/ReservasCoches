@@ -123,7 +123,8 @@ public class Controlador {
 		historialReservas.setVisible(true); 
 	}
 
-	public void mostrarF11DetallesReserva(String codigo) {
+	public void mostrarF11DetallesReserva() {
+		String codigo = "6";
 		detallesReserva = new Form11DetallesReserva(codigo);
 		detallesReserva.setVisible(true); 
 	}

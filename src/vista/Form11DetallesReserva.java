@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
@@ -86,11 +87,18 @@ public class Form11DetallesReserva extends JFrame{
 	/**
 	 * Create the application.
 	 */
+	
+	
 	public Form11DetallesReserva(String codigo) {
 		this.codigoReserva = codigo;
 		initialize();
 		mostrarDatos();
 	}
+
+	public Form11DetallesReserva() throws HeadlessException {
+		super();
+	}
+
 
 	/**
 	 * Initialize the contents of the frame.
@@ -248,7 +256,7 @@ public class Form11DetallesReserva extends JFrame{
 	
 	
 	public void mostrarDatos() {
-		System.out.println("Código reserva: "+codigo);
+		System.out.println("Código reserva: "+codigoReserva);
 		
 		
 		

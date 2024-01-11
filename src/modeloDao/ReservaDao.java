@@ -234,11 +234,10 @@ public class ReservaDao {
 
 		try{
 			conex= new Conexion();
-			String consulta="UPDATE reservas SET reCodigo = ? ,reFecInicio = ? , reFecFinal = ? WHERE reCodigo = ? ";
+			String consulta="UPDATE reservas SET reFecInicio = ? , reFecFinal = ? WHERE reCodigo = ? ";
 			ps = conex.getConnection().prepareStatement(consulta);
-			ps.setInt(1, reserva.getCodigo());
-			ps.setDate(2, fecInicioSql);
-			ps.setDate(3, fecFinalSql);
+			ps.setDate(1, fecInicioSql);
+			ps.setDate(2, fecFinalSql);
 			ps.executeUpdate();
 			JOptionPane.showMessageDialog(null, " Los datos de la reserva se han modificado correctamente ","Confirmación",JOptionPane.INFORMATION_MESSAGE);
 		}catch(SQLException e){

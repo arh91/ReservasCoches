@@ -67,7 +67,7 @@ public class Form06MasOpcionesCliente extends JFrame {
             if (!e.getValueIsAdjusting()) {
                 String selectedCodigo = clienteList.getSelectedValue();
                 if (selectedCodigo != null) {
-                    controlador.mostrarF11DetallesReserva(selectedCodigo);
+                	System.out.println("...");
                 }
             }
         });

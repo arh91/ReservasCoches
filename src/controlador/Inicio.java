@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class Inicio {
 
-	String codigo;
+	
 
 	private void iniciar() throws SQLException {
 		Form01Inicial inicio = new Form01Inicial();
@@ -17,7 +17,7 @@ public class Inicio {
 		Form06MasOpcionesCliente opcionesCliente = new Form06MasOpcionesCliente();
 		Form07MasOpcionesReserva masOpcionesReserva = new Form07MasOpcionesReserva();
 		Form10HistorialReservas historialReservas = new Form10HistorialReservas();
-		Form11DetallesReserva detallesReserva = new Form11DetallesReserva(codigo);
+		Form11DetallesReserva detallesReserva = new Form11DetallesReserva();
 		Controlador controlador = new Controlador();
 		
 		inicio.setControlador(controlador);

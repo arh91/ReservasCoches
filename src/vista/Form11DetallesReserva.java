@@ -81,6 +81,7 @@ public class Form11DetallesReserva extends JFrame{
 	public Form11DetallesReserva(String codigo) {
 		this.codigoReserva = codigo;
 		initialize();
+		mostrarDatos();
 	}
 
 	/**
@@ -169,7 +170,7 @@ public class Form11DetallesReserva extends JFrame{
 				btnEliminar.setActionCommand("OK");
 				buttonPane.add(btnEliminar);
 
-				JButton btnModificar = new JButton("Cancelar Reserva");
+				JButton btnModificar = new JButton("Modificar Reserva");
 				btnModificar.addActionListener(new ModifyButtonActionListener());
 				btnModificar.setActionCommand("Cancel");
 				buttonPane.add(btnModificar);
@@ -207,11 +208,26 @@ public class Form11DetallesReserva extends JFrame{
 	
 	
 	public void mostrarDatos() {
-		int codigo = Integer.parseInt(codigoReserva);
+		System.out.println("Código reserva: "+codigo);
+		/*int codigo = Integer.parseInt(codigoReserva);
 		ReservaCompleta reservaCompleta = new ReservaCompleta();
 		controlador.buscarReserva(reservaCompleta, codigo);
 		
+		String matriculaCoche = reservaCompleta.getMatriculaCoche();
+		String marcaCoche = reservaCompleta.getMarcaCoche();
+		String modeloCoche = reservaCompleta.getModeloCoche();
+		String colorCoche = reservaCompleta.getColorCoche();
+		String precioCoche = String.valueOf(reservaCompleta.getPrecioCoche());
+		String nombreCliente = reservaCompleta.getNombreCliente();
+		String codigoReserva = String.valueOf(reservaCompleta.getCodigoReserva());
+		String litrosGasolina = String.valueOf(reservaCompleta.getLitrosGasolina());
+		String fecInicioReserva = String.valueOf(reservaCompleta.getFecInicioReserva());
+		String fecFinalReserva = String.valueOf(reservaCompleta.getFecFinalReserva());
 		
+		textFecInicial.setText(fecInicioReserva);
+		textFecFinal.setText(fecFinalReserva);
+		textCodReserva.setText(codigoReserva);
+		textLitros.setText(litrosGasolina);*/
 	}
 
 }

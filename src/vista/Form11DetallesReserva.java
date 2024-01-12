@@ -261,7 +261,7 @@ public class Form11DetallesReserva extends JFrame{
 		
 		
 		textCodReserva.setEnabled(false);
-		/*int codigo = Integer.parseInt(codigoReserva);
+		int codigo = Integer.parseInt(codigoReserva);
 		ReservaCompleta reservaCompleta = new ReservaCompleta();
 		controlador.buscarReserva(reservaCompleta, codigo);
 		
@@ -279,7 +279,7 @@ public class Form11DetallesReserva extends JFrame{
 		textFecInicial.setText(fecInicioReserva);
 		textFecFinal.setText(fecFinalReserva);
 		textCodReserva.setText(codigoReserva);
-		textLitros.setText(litrosGasolina);*/
+		textLitros.setText(litrosGasolina);
 	}
 	
 	

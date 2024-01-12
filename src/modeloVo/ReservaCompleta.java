@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class ReservaCompleta {
 	private String matriculaCoche;
+	private String dniCliente;
 	private String nombreCliente;
 	private int codigoReserva;
 	private int litrosGasolina;
@@ -19,11 +20,12 @@ public class ReservaCompleta {
 		super();
 	}
 	
-	public ReservaCompleta(String matriculaCoche, String nombreCliente, int codigoReserva, int litrosGasolina,
+	public ReservaCompleta(String matriculaCoche, String dniCliente, String nombreCliente, int codigoReserva, int litrosGasolina,
 			Date fecInicioReserva, Date fecFinalReserva, String marcaCoche, String modeloCoche, String colorCoche,
 			int precioCoche) {
 		super();
 		this.matriculaCoche = matriculaCoche;
+		this.dniCliente = dniCliente;
 		this.nombreCliente = nombreCliente;
 		this.codigoReserva = codigoReserva;
 		this.litrosGasolina = litrosGasolina;
@@ -44,6 +46,14 @@ public class ReservaCompleta {
 		this.matriculaCoche = matriculaCoche;
 	}
 	
+	public String getDniCliente() {
+		return dniCliente;
+	}
+
+	public void setDniCliente(String dniCliente) {
+		this.dniCliente = dniCliente;
+	}
+
 	public String getNombreCliente() {
 		return nombreCliente;
 	}

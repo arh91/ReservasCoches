@@ -264,6 +264,13 @@ public class Form02NuevaReserva extends JFrame {
 				codigoReserva = reserva.getCodigo();
 				controlador.insertarReserva(reserva, codigoReserva);
 				controlador.insertarInvolucra(involucra, codigoReserva);
+				Form07MasOpcionesReserva masOpcionesReservas;
+				try {
+					masOpcionesReservas = new Form07MasOpcionesReserva();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		}
 	}

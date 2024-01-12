@@ -124,8 +124,6 @@ public class Controlador {
 	}
 
 	public void mostrarF11DetallesReserva() {
-		String codigo = "6";
-		detallesReserva = new Form11DetallesReserva(codigo);
 		detallesReserva.setVisible(true); 
 	}
 

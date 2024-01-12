@@ -151,11 +151,11 @@ public class ReservaDao {
 		boolean existe=false;
 		try {
 			conex = new Conexion();
-			String consulta = "SELECT inMatricula, inReserva, inLitros, reFecInicio, reFecFinal, clNombre, coMarca, coModelo, coColor, coPrecio  FROM Involucra "+
-					          "JOIN Clientes ON inCliente = clNif"+
+			String consulta = "SELECT inMatricula, inReserva, inCliente, inLitros, reFecInicio, reFecFinal, clNombre, coMarca, coModelo, coColor, coPrecio FROM Involucra "+
+					          "JOIN Clientes ON inCliente = clNif "+
 					          "JOIN Coches ON inMatricula = coMatricula "+
 					          "JOIN Reservas ON inReserva = reCodigo "+
-					          "WHERE inReserva = ?";
+					          "WHERE reCodigo = ?";
 			ps = conex.getConnection().prepareStatement(consulta);
 			ps.setInt(1, codigo);
 			ResultSet res = ps.executeQuery();
@@ -163,6 +163,7 @@ public class ReservaDao {
 				existe=true;
 				reserva.setMatriculaCoche(res.getString("inMatricula"));
 				reserva.setCodigoReserva(res.getInt("inReserva"));
+				reserva.setDniCliente(res.getString("inCliente"));
 				reserva.setLitrosGasolina(res.getInt("inLitros"));
 				reserva.setFecInicioReserva(res.getDate("reFecInicio"));
 				reserva.setFecFinalReserva(res.getDate("reFecFinal"));

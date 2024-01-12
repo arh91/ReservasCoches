@@ -49,19 +49,14 @@ public class Form07MasOpcionesReserva extends JFrame {
 	/**
 	 * Create the application.
 	 */
-	public Form07MasOpcionesReserva() {
-		try {
-			initialize();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public Form07MasOpcionesReserva() throws SQLException {
+		initialize();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() throws SQLException {
+	public void initialize() throws SQLException {
 		setTitle("Reservas");
         setSize(400, 307);
         getContentPane().setLayout(new BorderLayout());

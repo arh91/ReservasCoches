@@ -23,6 +23,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import controlador.Controlador;
+import modeloVo.Cliente;
+import modeloVo.Coche;
 import modeloVo.Involucra;
 import modeloVo.Reserva;
 import modeloVo.ReservaCompleta;
@@ -258,7 +260,8 @@ public class Form11DetallesReserva extends JFrame{
 	public void mostrarDatos() {
 		System.out.println("Código reserva: "+codigoReserva);
 		
-		
+		Cliente cliente = new Cliente();
+		Coche coche = new Coche();
 		
 		textCodReserva.setEnabled(false);
 		int codigo = Integer.parseInt(codigoReserva);
@@ -269,17 +272,34 @@ public class Form11DetallesReserva extends JFrame{
 		String marcaCoche = reservaCompleta.getMarcaCoche();
 		String modeloCoche = reservaCompleta.getModeloCoche();
 		String colorCoche = reservaCompleta.getColorCoche();
-		String precioCoche = String.valueOf(reservaCompleta.getPrecioCoche());
+		int precioCoche = reservaCompleta.getPrecioCoche();
+		String dniCliente = reservaCompleta.getDniCliente();
 		String nombreCliente = reservaCompleta.getNombreCliente();
 		String codigoReserva = String.valueOf(reservaCompleta.getCodigoReserva());
 		String litrosGasolina = String.valueOf(reservaCompleta.getLitrosGasolina());
 		String fecInicioReserva = String.valueOf(reservaCompleta.getFecInicioReserva());
 		String fecFinalReserva = String.valueOf(reservaCompleta.getFecFinalReserva());
 		
+		
+		cliente.setNif(dniCliente);
+		cliente.setNombre(nombreCliente);
+		
+		coche.setMatricula(matriculaCoche);
+		coche.setMarca(marcaCoche);
+		coche.setModelo(modeloCoche);
+		coche.setColor(colorCoche);
+		coche.setPrecio(precioCoche);
+		
+		
 		textFecInicial.setText(fecInicioReserva);
 		textFecFinal.setText(fecFinalReserva);
 		textCodReserva.setText(codigoReserva);
 		textLitros.setText(litrosGasolina);
+		comboBox_Clientes.setSelectedItem(cliente);
+		comboBox_Coches.setSelectedItem(coche);
+		
+		System.out.println(cliente);
+		System.out.println(coche);
 	}
 	
 	

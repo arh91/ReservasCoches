@@ -295,8 +295,23 @@ public class Form11DetallesReserva extends JFrame{
 		textFecFinal.setText(fecFinalReserva);
 		textCodReserva.setText(codigoReserva);
 		textLitros.setText(litrosGasolina);
-		comboBox_Clientes.setSelectedItem(cliente);
-		comboBox_Coches.setSelectedItem(coche);
+		
+		for (int i = 0; i < comboBox_Clientes.getItemCount(); i++) {
+		    Cliente item_combo = comboBox_Clientes.getItemAt(i);
+		    if(item_combo.equals(cliente)) {
+		    	comboBox_Clientes.setSelectedItem(item_combo);
+		    	break;
+		    }
+		}
+		
+		for (int i = 0; i < comboBox_Coches.getItemCount(); i++) {
+		    Coche item_combo = comboBox_Coches.getItemAt(i);
+		    if(item_combo.equals(coche)) {
+		    	comboBox_Coches.setSelectedItem(item_combo);
+		    	break;
+		    }
+		}
+		
 		
 		System.out.println(cliente);
 		System.out.println(coche);

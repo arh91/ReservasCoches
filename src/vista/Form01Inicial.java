@@ -12,8 +12,6 @@ public class Form01Inicial extends JFrame{
 
 	private final JPanel contentPane = new JPanel();
 	
-	//private JDialog dialogg;
-	
 	Controlador controlador = new Controlador();
 	
 	public void setControlador(Controlador controlador) {

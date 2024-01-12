@@ -1,5 +1,7 @@
 package modeloVo;
 
+import java.util.Objects;
+
 public class Cliente {
 	
 	private String nif;
@@ -41,6 +43,25 @@ public class Cliente {
 	public void setTelefono(int telefono) {
 		this.telefono = telefono;
 	}
+	
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(nif, nombre);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Cliente other = (Cliente) obj;
+		return Objects.equals(nif, other.nif) && Objects.equals(nombre, other.nombre);
+	}
+	
+	
 	@Override
 	public String toString() {
 		return  nif+"  "+nombre+"  ";

@@ -1,5 +1,7 @@
 package modeloVo;
 
+import java.util.Objects;
+
 public class Coche {
 	private String matricula;
 	private String marca;
@@ -65,6 +67,27 @@ public class Coche {
 	public void setGaraje(int garaje) {
 		this.garaje = garaje;
 	}
+	
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(color, marca, matricula, modelo, precio);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Coche other = (Coche) obj;
+		return Objects.equals(color, other.color) && Objects.equals(marca, other.marca)
+				&& Objects.equals(matricula, other.matricula) && Objects.equals(modelo, other.modelo)
+				&& precio == other.precio;
+	}
+	
+	
 	@Override
 	public String toString() {
 		return matricula+"   "+marca+"   "+modelo+"   "+color+"   "+"precio = "+precio+"  ";

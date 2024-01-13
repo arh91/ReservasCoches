@@ -108,7 +108,7 @@ public class InvolucraDao {
 	public void eliminarInvolucra (int codigo) throws SQLException {
 		int res = JOptionPane.showOptionDialog(new JFrame(), "¿Estás seguro que deseas cancelar la reserva?", "Options",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
-				new Object[] { "Sí, estoy seguro", "Volver atrás" }, JOptionPane.YES_OPTION);
+				new Object[] { "Aceptar", "Volver atrás" }, JOptionPane.YES_OPTION);
 
 		if (res == JOptionPane.YES_OPTION) {
 			Conexion conex = new Conexion();
@@ -131,7 +131,7 @@ public class InvolucraDao {
 	public void modificarInvolucra (Involucra involucra, int codigo) {
 		int res = JOptionPane.showOptionDialog(new JFrame(), "¿Estás seguro que deseas modificar los datos de reserva?", "Options",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
-				new Object[] { "Sí, estoy seguro", "Volver atrás" }, JOptionPane.YES_OPTION);
+				new Object[] { "Aceptar", "Cancelar" }, JOptionPane.YES_OPTION);
 
 		if (res == JOptionPane.YES_OPTION) {
 			Conexion conex= new Conexion();

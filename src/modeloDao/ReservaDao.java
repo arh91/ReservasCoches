@@ -528,6 +528,46 @@ public class ReservaDao {
 	}
 	
 	
+	public void eliminarReservasCliente (String codigo){
+		int res = JOptionPane.showOptionDialog(new JFrame(), "Si selecciona aceptar, se eliminará el cliente y todas sus reservas existentes. ¿Está seguro que desea continuar con ésta operación?", "Options",
+				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+				new Object[] { "Aceptar", "Cancelar" }, JOptionPane.YES_OPTION);
+		if (res == JOptionPane.YES_OPTION) {
+			Conexion conex = null;
+			PreparedStatement ps = null;
+			try {
+				conex= new Conexion();
+				String consulta = "DELETE FROM reservas "+
+						"JOIN Involucra ON reCodigo = inReserva "+
+						"JOIN Clientes ON inCliente = clNif "+
+						"WHERE clNif= ?";
+				ps = conex.getConnection().prepareStatement(consulta);
+				ps.setString(1, codigo);
+				ps.executeUpdate();
+				//JOptionPane.showMessageDialog(null, " La reserva se ha cancelado Correctamente","Información",JOptionPane.INFORMATION_MESSAGE);
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+				//JOptionPane.showMessageDialog(null, "Error, no se pudo cancelar la reserva");
+			}
+			finally {
+				try {
+					if(ps!=null) {
+						ps.close();
+					}
+					if (conex!=null){
+						conex.desconectar();
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}else {
+			return;
+		}
+}
+	
+	
 	/*private void showDetalleReserva(String codigo, ) {
         JFrame detalleFrame = new JFrame("Detalles de Reserva - Código: " + codigo);
         detalleFrame.setSize(300, 200);

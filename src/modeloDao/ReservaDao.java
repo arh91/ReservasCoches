@@ -240,6 +240,7 @@ public class ReservaDao {
 			ps = conex.getConnection().prepareStatement(consulta);
 			ps.setDate(1, fecInicioSql);
 			ps.setDate(2, fecFinalSql);
+			ps.setInt(3, codigo);
 			ps.executeUpdate();
 			JOptionPane.showMessageDialog(null, " Los datos de la reserva se han modificado correctamente ","Confirmación",JOptionPane.INFORMATION_MESSAGE);
 		}catch(SQLException e){

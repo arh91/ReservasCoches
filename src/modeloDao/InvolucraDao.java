@@ -141,6 +141,7 @@ public class InvolucraDao {
 				ps.setString(1, involucra.getMatricula());
 				ps.setString(2, involucra.getCliente());
 				ps.setInt(3, involucra.getLitros());
+				ps.setInt(4, codigo);
 				ps.executeUpdate();
 				//JOptionPane.showMessageDialog(null, " Los datos de la reserva se han modificado correctamente ","Confirmación",JOptionPane.INFORMATION_MESSAGE);
 			}catch(SQLException e){

@@ -121,7 +121,6 @@ public class InvolucraDao {
 				conex.desconectar();
 			} catch (SQLException e) {
 				System.out.println(e.getMessage());
-				JOptionPane.showMessageDialog(null, "Error, no se pudo eliminar el cliente");
 			}
 		}else {
 			return;

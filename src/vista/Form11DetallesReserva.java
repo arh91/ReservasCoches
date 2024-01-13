@@ -58,10 +58,13 @@ public class Form11DetallesReserva extends JFrame{
 	private String matriculaCoche;
 	private String nifInvolucra;
 	
-	private String fechaInicioModificada;
+	private String fecha;
 	private String fechaFinModificada;
 	
 	ConvertirFechas convertirFechas = new ConvertirFechas();
+
+	private String fecInicioReserva;
+	private String fecFinalReserva;
 	
 	public void setControlador(Controlador controlador) {
 		this.controlador = controlador;
@@ -107,7 +110,7 @@ public class Form11DetallesReserva extends JFrame{
 	 */
 	private void initialize() {
 		setTitle("Detalles Reserva");
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 869, 455);
 		getContentPane().setLayout(new BorderLayout());
 		setExtendedState(JFrame.NORMAL);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -183,7 +186,7 @@ public class Form11DetallesReserva extends JFrame{
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton btnEliminar = new JButton("Eliminar Reserva");
+				JButton btnEliminar = new JButton("Cancelar Reserva");
 				btnEliminar.addActionListener(new DeleteButtonActionListener());
 				btnEliminar.setActionCommand("OK");
 				buttonPane.add(btnEliminar);
@@ -206,14 +209,14 @@ public class Form11DetallesReserva extends JFrame{
 	
 	private class DeleteButtonActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
-			int codigoReserva = Integer.parseInt(codigo);
+			int codigo = Integer.parseInt(codigoReserva);
 			try {
-				controlador.eliminarInvolucra(codigoReserva);
+				controlador.eliminarInvolucra(codigo);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			controlador.eliminarReserva(codigoReserva);
+			controlador.eliminarReserva(codigo);
 		}
 	}
 
@@ -277,9 +280,11 @@ public class Form11DetallesReserva extends JFrame{
 		String nombreCliente = reservaCompleta.getNombreCliente();
 		String codigoReserva = String.valueOf(reservaCompleta.getCodigoReserva());
 		String litrosGasolina = String.valueOf(reservaCompleta.getLitrosGasolina());
-		String fecInicioReserva = String.valueOf(reservaCompleta.getFecInicioReserva());
-		String fecFinalReserva = String.valueOf(reservaCompleta.getFecFinalReserva());
+		fecInicioReserva = String.valueOf(reservaCompleta.getFecInicioReserva());
+		fecFinalReserva = String.valueOf(reservaCompleta.getFecFinalReserva());
 		
+		modificarFechaInicioCapturada();
+		modificarFechaFinCapturada();
 		
 		cliente.setNif(dniCliente);
 		cliente.setNombre(nombreCliente);
@@ -324,7 +329,7 @@ public class Form11DetallesReserva extends JFrame{
 		modificarFechaInicio();
 		modificarFechaFin();
 
-		fechaInicio = convertirFechas.convertirStringDate(fechaInicioModificada);
+		fechaInicio = convertirFechas.convertirStringDate(fecha);
 		fechaFinal = convertirFechas.convertirStringDate(fechaFinModificada);
 
 		reserva.setCodigo(codReserva);
@@ -356,8 +361,8 @@ public class Form11DetallesReserva extends JFrame{
 	}
 	
 	private void modificarFechaInicio(){
-		fechaInicioModificada = textFecInicial.getText();
-		String[] arrFecInicial = fechaInicioModificada.split("/");
+		fecha = textFecInicial.getText();
+		String[] arrFecInicial = fecha.split("/");
 		String[] arrFecInicialModificado = new String[3];
 		System.out.println(arrFecInicial[0]);
 		System.out.println(arrFecInicial[1]);
@@ -373,7 +378,7 @@ public class Form11DetallesReserva extends JFrame{
 		String mesInicio = String.valueOf(arrFecInicialModificado[1]);
 		String anhoInicio = String.valueOf(arrFecInicialModificado[0]);
 
-		fechaInicioModificada = anhoInicio+"-"+mesInicio+"-"+diaInicio;
+		fecha = anhoInicio+"-"+mesInicio+"-"+diaInicio;
 	}
 
 	private void modificarFechaFin(){
@@ -393,5 +398,41 @@ public class Form11DetallesReserva extends JFrame{
 
 		fechaFinModificada = anhoFin+"-"+mesFin+"-"+diaFin;
 	}
+	
+	private void modificarFechaInicioCapturada(){
+		String[] arrFecInicial = fecInicioReserva.split("-");
+		String[] arrFecInicialModificado = new String[3];
+		
+		int j=0;
+		for(int i= arrFecInicial.length-1; i>=0; i--){
+
+			arrFecInicialModificado[j] = arrFecInicial[i];
+			j++;
+		}
+
+		String diaInicio = String.valueOf(arrFecInicialModificado[0]);
+		String mesInicio = String.valueOf(arrFecInicialModificado[1]);
+		String anhoInicio = String.valueOf(arrFecInicialModificado[2]);
+
+		fecInicioReserva = diaInicio+"/"+mesInicio+"/"+anhoInicio;
+	}
+
+	private void modificarFechaFinCapturada(){
+		String[] arrFecFinal = fecFinalReserva.split("-");
+		String[] arrFecFinalModificado = new String[3];
+
+		int k=0;
+		for(int i=arrFecFinal.length-1; i>=0; i--){
+			arrFecFinalModificado[k] = arrFecFinal[i];
+			k++;
+		}
+
+		String diaFin = String.valueOf(arrFecFinalModificado[0]);
+		String mesFin = String.valueOf(arrFecFinalModificado[1]);
+		String anhoFin = String.valueOf(arrFecFinalModificado[2]);
+
+		fecFinalReserva = diaFin+"/"+mesFin+"/"+anhoFin;
+	}
+
 
 }

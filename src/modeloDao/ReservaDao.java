@@ -99,10 +99,10 @@ public class ReservaDao {
 				ps = conex.getConnection().prepareStatement(consulta);
 				ps.setInt(1, codigo);
 				ps.executeUpdate();
-				//JOptionPane.showMessageDialog(null, " La reserva se ha cancelado Correctamente","Información",JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, " La reserva se ha cancelado Correctamente","Información",JOptionPane.INFORMATION_MESSAGE);
 			} catch (SQLException e) {
 				System.out.println(e.getMessage());
-				//JOptionPane.showMessageDialog(null, "Error, no se pudo cancelar la reserva");
+				JOptionPane.showMessageDialog(null, "Error, no se pudo cancelar la reserva");
 			}
 			finally {
 				try {

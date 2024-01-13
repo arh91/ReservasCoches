@@ -145,11 +145,11 @@ public class ClienteDao {
 	public void cargarListaClientes(DefaultListModel clientesListModel){
 		Conexion conex = new Conexion();
         try {
-        	String consulta = "SELECT clCodigo FROM clientes";
+        	String consulta = "SELECT clNif FROM clientes";
         	PreparedStatement ps = conex.getConnection().prepareStatement(consulta);
         	ResultSet res = ps.executeQuery();
             while (res.next()) {
-                String codigo = res.getString("clCodigo");
+                String codigo = res.getString("clNif");
                 clientesListModel.addElement(codigo);
             }
             res.close();

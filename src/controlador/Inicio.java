@@ -18,7 +18,6 @@ public class Inicio {
 		Form07MasOpcionesReserva masOpcionesReserva = new Form07MasOpcionesReserva();
 		Form10HistorialReservas historialReservas = new Form10HistorialReservas();
 		Form11DetallesReserva detallesReserva = new Form11DetallesReserva();
-		Form12DetallesCliente detallesCliente = new Form12DetallesCliente();
 		Controlador controlador = new Controlador();
 		
 		inicio.setControlador(controlador);
@@ -30,7 +29,6 @@ public class Inicio {
 		masOpcionesReserva.setControlador(controlador);
 		historialReservas.setControlador(controlador);
 		detallesReserva.setControlador(controlador);
-		detallesCliente.setControlador(controlador);
 		
 		controlador.setInicio(inicio);
 		controlador.setNuevaReserva(nuevaReserva);
@@ -41,7 +39,6 @@ public class Inicio {
 		controlador.setMasOpcionesReserva(masOpcionesReserva);
 		controlador.setHistorialReservas(historialReservas);
 		controlador.setDetallesReserva(detallesReserva);
-		controlador.setDetallesCliente(detallesCliente);
 
 		controlador.mostrarF01Inicial();
 	}

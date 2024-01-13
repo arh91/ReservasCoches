@@ -31,7 +31,6 @@ public class Controlador {
 	Form07MasOpcionesReserva masOpcionesReserva;
 	Form10HistorialReservas historialReservas;
 	Form11DetallesReserva detallesReserva;
-	Form12DetallesCliente detallesCliente;
 	
 	ClienteDao clienteDao = new ClienteDao();
 	CocheDao cocheDao = new CocheDao();
@@ -74,9 +73,6 @@ public class Controlador {
 	public void setDetallesReserva(Form11DetallesReserva detallesReserva) { 
 		this.detallesReserva = detallesReserva;}
 	
-	public void setDetallesCliente(Form12DetallesCliente detallesCliente) {
-		this.detallesCliente = detallesCliente;
-	}
 
 	/*public void setClienteDao (ClienteDao clienteDao) {
 		this.clienteDao = clienteDao;
@@ -130,10 +126,6 @@ public class Controlador {
 
 	public void mostrarF11DetallesReserva() {
 		detallesReserva.setVisible(true); 
-	}
-	
-	public void mostrarF12DetallesCliente() {
-		detallesCliente.setVisible(true);
 	}
 
 	

@@ -7,4 +7,4 @@ y tampoco están las funcionalidades para eliminar clientes o para modificar dat
 Pero en el área de reservas sí que están implementadas todas las funcionalidades relativas al registro, listado, búsqueda de datos, cancelación y modificación de reservas.
 Además, en ésta versión el usuario también podrá consultar listados de clientes, de las reservas en curso así como del historial de reservas.
 
-Actualmente, estoy trabajando en una nueva actualización de éste programa con algunas mejoras y para cubrir las funcionalidades que faltan, la cuál alojaré en otro repositorio aparte.
+Actualmente, estoy trabajando en una nueva actualización de éste programa para cubrir las funcionalidades que faltan e implementar algunas nuevas... dicha actualización la alojaré en otro repositorio aparte.

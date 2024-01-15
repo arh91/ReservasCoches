@@ -3,11 +3,15 @@ package vista;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.HeadlessException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Date;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -21,32 +25,27 @@ import javax.swing.border.TitledBorder;
 
 import controlador.Controlador;
 import modeloVo.ReservaCompleta;
+/*import vista.Form12DetallesCliente.BtnAtrasActionListener;
+import vista.Form12DetallesCliente.BtnEliminarClienteActionListener;
+import vista.Form12DetallesCliente.BtnModificarClienteActionListener;*/
 
 public class pruebaa extends JFrame{
-	static String codigo;
 	
-	private final JPanel contentPanel = new JPanel();
-
-	LocalDate todaysDate = LocalDate.now();  //Fecha actual del sistema
-
 	Controlador controlador = new Controlador();
 
-	private JTextField textFecInicial;
-	private JTextField textFecFinal;
-	private JTextField textLitros;
-	private JTextField textCodReserva;
-	private ModeloComboClientes comboBox_Clientes;
-	private ModeloComboCoches comboBox_Coches;
-
+	private JFrame frame;
+	private JTextField textField_primer_apellido;
+	private JTextField textField_nombre;
+	private JTextField textField_calle;
+	private JTextField textField_numero;
+	private JTextField textField_telefono;
+	private JTextField textField_nif;
+	private JTextField textField_localidad;
 	private String codigoReserva;
-	private Date fechaInicio;
-	private Date fechaFinal;
-	private int litros;
 	
 	public void setControlador(Controlador controlador) {
 		this.controlador = controlador;
 	}
-	
 
 	/**
 	 * Launch the application.
@@ -55,7 +54,7 @@ public class pruebaa extends JFrame{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					pruebaa frame = new pruebaa(codigo);
+					pruebaa frame = new pruebaa();
 					frame.setDefaultCloseOperation(JFrame
 		                    .DISPOSE_ON_CLOSE);
 					frame.setVisible(true);
@@ -72,92 +71,125 @@ public class pruebaa extends JFrame{
 	public pruebaa(String codigo) {
 		this.codigoReserva = codigo;
 		initialize();
+		
+	}
+	
+	
+
+	public pruebaa() throws HeadlessException {
+		super();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		setTitle("Detalles Reserva");
-		setBounds(100, 100, 550, 300);
-		getContentPane().setLayout(new BorderLayout());
+		setTitle("Nuevo Cliente");
+		setBounds(100, 100, 635, 404);
 		setExtendedState(JFrame.NORMAL);
-		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(null);
-
-		JLabel lblCliente = new JLabel("Cliente:");
-		lblCliente.setBounds(35, 24, 56, 16);
-		contentPanel.add(lblCliente);
-
-		JLabel lblCoche = new JLabel("Coche:");
-		lblCoche.setBounds(35, 67, 56, 16);
-		contentPanel.add(lblCoche);
-
-
-
-		JPanel panel_Reserva = new JPanel();
-		panel_Reserva.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Reserva", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_Reserva.setBounds(12, 105, 827, 139);
-		contentPanel.add(panel_Reserva);
-		panel_Reserva.setLayout(null);
-
-		JLabel lblFechaInicial = new JLabel("Fecha Inicial (DD/MM/AAAA):");
-		lblFechaInicial.setBounds(45, 35, 192, 16);
-		panel_Reserva.add(lblFechaInicial);
-
-		JLabel lblFechafinal = new JLabel("FechaFinal (DD/MM/AAAA):");
-		lblFechafinal.setBounds(438, 35, 179, 16);
-		panel_Reserva.add(lblFechafinal);
-
-		textFecInicial = new JTextField();
-		textFecInicial.setHorizontalAlignment(SwingConstants.CENTER);
-		textFecInicial.setBounds(249, 32, 116, 22);
-		panel_Reserva.add(textFecInicial);
-		textFecInicial.setColumns(10);
-
-		textFecFinal = new JTextField();
-		textFecFinal.setHorizontalAlignment(SwingConstants.CENTER);
-		textFecFinal.setColumns(10);
-		textFecFinal.setBounds(629, 32, 116, 22);
-		panel_Reserva.add(textFecFinal);
-
-		JLabel lblLitros = new JLabel("Litros consumidos:");
-		lblLitros.setBounds(438, 81, 152, 16);
-		panel_Reserva.add(lblLitros);
-
-		textLitros = new JTextField();
-		textLitros.setHorizontalAlignment(SwingConstants.CENTER);
-		textLitros.setBounds(629, 78, 116, 22);
-		panel_Reserva.add(textLitros);
-		textLitros.setColumns(10);
-
-		JLabel lblCdigoReserva = new JLabel("C\u00F3digo Reserva:");
-		lblCdigoReserva.setBounds(45, 81, 167, 16);
-		panel_Reserva.add(lblCdigoReserva);
-
-		textCodReserva = new JTextField();
-		textCodReserva.setHorizontalAlignment(SwingConstants.CENTER);
-		textCodReserva.setColumns(10);
-		textCodReserva.setBounds(249, 78, 116, 22);
-		panel_Reserva.add(textCodReserva);
-
-		comboBox_Coches = new ModeloComboCoches();
-		comboBox_Coches.setBounds(101, 65, 686, 20);
-		contentPanel.add(comboBox_Coches);
-
-		comboBox_Clientes = new ModeloComboClientes();
-		comboBox_Clientes.setBounds(101, 22, 196, 20);
-		contentPanel.add(comboBox_Clientes);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		getContentPane().setLayout(null);
+		
+		textField_primer_apellido = new JTextField();
+		textField_primer_apellido.setBounds(129, 110, 96, 19);
+		getContentPane().add(textField_primer_apellido);
+		textField_primer_apellido.setColumns(10);
+		
+		JLabel label_nombre = new JLabel("Nombre");
+		label_nombre.setBounds(28, 79, 58, 13);
+		getContentPane().add(label_nombre);
+		
+		JLabel label_primer_apellido = new JLabel("Primer Apellido");
+		label_primer_apellido.setBounds(28, 113, 110, 13);
+		getContentPane().add(label_primer_apellido);
+		
+		JLabel label_nif = new JLabel("NIF");
+		label_nif.setBounds(28, 45, 45, 13);
+		getContentPane().add(label_nif);
+		
+		JLabel label_calle = new JLabel("Calle");
+		label_calle.setBounds(28, 147, 45, 13);
+		getContentPane().add(label_calle);
+		
+		JLabel label_numero = new JLabel("Número");
+		label_numero.setBounds(28, 181, 45, 13);
+		getContentPane().add(label_numero);
+		
+		JLabel label_telefono = new JLabel("Teléfono");
+		label_telefono.setBounds(28, 249, 70, 13);
+		getContentPane().add(label_telefono);
+		
+		textField_nombre = new JTextField();
+		textField_nombre.setColumns(10);
+		textField_nombre.setBounds(129, 76, 96, 19);
+		getContentPane().add(textField_nombre);
+		
+		textField_calle = new JTextField();
+		textField_calle.setColumns(10);
+		textField_calle.setBounds(129, 144, 96, 19);
+		getContentPane().add(textField_calle);
+		
+		textField_numero = new JTextField();
+		textField_numero.setColumns(10);
+		textField_numero.setBounds(129, 178, 96, 19);
+		getContentPane().add(textField_numero);
+		
+		textField_telefono = new JTextField();
+		textField_telefono.setColumns(10);
+		textField_telefono.setBounds(129, 252, 96, 19);
+		getContentPane().add(textField_telefono);
+		
+		textField_nif = new JTextField();
+		textField_nif.setColumns(10);
+		textField_nif.setBounds(129, 42, 96, 19);
+		getContentPane().add(textField_nif);
+		
+		JButton btnEliminarCliente = new JButton("Eliminar Cliente");
+		btnEliminarCliente.addActionListener(new BtnEliminarClienteActionListener());
+		btnEliminarCliente.setBounds(396, 121, 139, 21);
+		getContentPane().add(btnEliminarCliente);
+		
+		JButton btnModificarCliente = new JButton("Modificar Cliente");
+		btnModificarCliente.addActionListener(new BtnModificarClienteActionListener());
+		btnModificarCliente.setBounds(104, 327, 132, 21);
+		getContentPane().add(btnModificarCliente);
+		
+		JButton btnAtras = new JButton("Atras");
+		btnAtras.addActionListener(new BtnAtrasActionListener());
+		btnAtras.setBounds(396, 327, 85, 21);
+		getContentPane().add(btnAtras);
+		
+		JLabel lblLocalidad = new JLabel("Localidad");
+		lblLocalidad.setAutoscrolls(true);
+		lblLocalidad.setBounds(28, 215, 70, 13);
+		getContentPane().add(lblLocalidad);
+		
+		textField_localidad = new JTextField();
+		textField_localidad.setColumns(10);
+		textField_localidad.setBounds(129, 215, 96, 19);
+		getContentPane().add(textField_localidad);
 	}
 	
 	
-	public void mostrarDatos() {
-		int codigo = Integer.parseInt(codigoReserva);
-		ReservaCompleta reservaCompleta = new ReservaCompleta();
-		controlador.buscarReserva(reservaCompleta, codigo);
-		
-		
+	private class BtnEliminarClienteActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent arg0) {
+			/*controlador.eliminarReservasCliente(codigoReserva);
+			controlador.eliminarInvolucraCliente(codigoReserva);
+			controlador.eliminarCliente(codigoReserva);*/
+		}
+	}
+	
+	private class BtnModificarClienteActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent arg0) {
+			
+		}
+	}
+	
+	private class BtnAtrasActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent arg0) {
+			dispose();
+			controlador.mostrarF06MasOpcionesCliente();
+		}
 	}
 
 }

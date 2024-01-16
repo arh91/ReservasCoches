@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Arrays;
 
@@ -183,7 +184,12 @@ Form03ListadoReservas extends JFrame {
 	private class AtrasButtonActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			dispose();
-			controlador.mostrarF01Inicial();
+			try {
+				controlador.mostrarF01Inicial();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 

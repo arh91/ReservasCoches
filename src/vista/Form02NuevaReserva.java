@@ -297,14 +297,24 @@ public class Form02NuevaReserva extends JFrame {
 	private class AtrasButtonActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
 			dispose();
-			controlador.mostrarF01Inicial();
+			try {
+				controlador.mostrarF01Inicial();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
 	private class MasOpcionesButtonActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
 			dispose();
-			controlador.mostrarF07MasOpcionesReserva();
+			try {
+				controlador.mostrarF07MasOpcionesReserva();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 

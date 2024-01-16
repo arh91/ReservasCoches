@@ -255,7 +255,12 @@ public class Form11DetallesReserva extends JFrame{
 	private class AtrasButtonActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
 			dispose();
-			controlador.mostrarF07MasOpcionesReserva();
+			try {
+				controlador.mostrarF07MasOpcionesReserva();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	

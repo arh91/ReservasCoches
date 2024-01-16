@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 public class Form04Cliente extends JFrame{
 	
@@ -170,7 +171,12 @@ public class Form04Cliente extends JFrame{
 	private class BtnAtrasActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
 			dispose();
-			controlador.mostrarF01Inicial();
+			try {
+				controlador.mostrarF01Inicial();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	

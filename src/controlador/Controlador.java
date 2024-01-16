@@ -92,39 +92,48 @@ public class Controlador {
 	
 	////////////////////////////////////////////////////////////////////////////////////
 	
-	public void mostrarF01Inicial() {
+	public void mostrarF01Inicial() throws SQLException {
+		inicio = new Form01Inicial();
 		inicio.setVisible(true);
 	}
 	
 	public void mostrarF02NuevaReserva() {
+		nuevaReserva = new Form02NuevaReserva();
 		nuevaReserva.setVisible(true);
 	}
 	
 	public void mostrarF03ListadoReservas() {
+		listaReservas = new Form03ListadoReservas();
 		listaReservas.setVisible(true);
 	}
 	
 	public void mostrarF04Clientes() {
+		clientes = new Form04Cliente();
 		clientes.setVisible(true);
 	}
 	
 	public void mostrarF05ListadoClientes() {
+		listaClientes = new Form05ListadoClientes();
 		listaClientes.setVisible(true);
 	}
 	
 	public void mostrarF06MasOpcionesCliente() {
+		masOpcionesCliente = new Form06MasOpcionesCliente();
 		masOpcionesCliente.setVisible(true);
 	}
 
-	public void mostrarF07MasOpcionesReserva(){
+	public void mostrarF07MasOpcionesReserva() throws SQLException{
+		masOpcionesReserva = new Form07MasOpcionesReserva();
 		masOpcionesReserva.setVisible(true);
 	}
 
 	public void mostrarF10HistorialReservas() { 
+		historialReservas = new Form10HistorialReservas();
 		historialReservas.setVisible(true); 
 	}
 
-	public void mostrarF11DetallesReserva() {
+	public void mostrarF11DetallesReserva(String codigo) {
+		detallesReserva = new Form11DetallesReserva(codigo);
 		detallesReserva.setVisible(true); 
 	}
 

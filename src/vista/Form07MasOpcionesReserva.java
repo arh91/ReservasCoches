@@ -57,7 +57,7 @@ public class Form07MasOpcionesReserva extends JFrame {
 	 * Initialize the contents of the frame.
 	 */
 	public void initialize() throws SQLException {
-		setTitle("Reservas");
+		setTitle("Listado Reservas");
         setSize(400, 307);
         getContentPane().setLayout(new BorderLayout());
 

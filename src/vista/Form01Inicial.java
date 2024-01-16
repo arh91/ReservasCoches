@@ -46,7 +46,7 @@ public class Form01Inicial extends JFrame{
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() throws SQLException {
-		setTitle("Inicio");
+		setTitle("Principal");
 		setBounds(100, 100, 450, 300);
 		setExtendedState(JFrame.NORMAL);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

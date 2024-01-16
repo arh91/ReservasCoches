@@ -53,7 +53,7 @@ public class Form06MasOpcionesCliente extends JFrame {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() throws SQLException {
-		setTitle("Clientes");
+		setTitle("Listado Clientes");
         setSize(400, 307);
         getContentPane().setLayout(new BorderLayout());
 

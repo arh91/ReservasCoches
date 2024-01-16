@@ -10,6 +10,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Form05ListadoClientes extends JFrame {
@@ -41,7 +42,7 @@ public class Form05ListadoClientes extends JFrame {
 	
 	public static void main(String[] args) {
 		try {
-			Form03ListadoReservas frame = new Form03ListadoReservas();
+			Form05ListadoClientes frame = new Form05ListadoClientes();
 			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			frame.setVisible(true);
 		} catch (Exception e) {
@@ -120,7 +121,12 @@ public class Form05ListadoClientes extends JFrame {
 	private class AtrasButtonActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			dispose();
-			controlador.mostrarF01Inicial();
+			try {
+				controlador.mostrarF01Inicial();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 

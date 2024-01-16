@@ -54,17 +54,22 @@ public class Form11DetallesReserva extends JFrame{
 	private String codigoReserva;
 	private Date fechaInicio;
 	private Date fechaFinal;
+	
 	private int litros;
 	private String matriculaCoche;
 	private String nifInvolucra;
+	private int codReservaInvolucra;
 	
 	private String fecha;
 	private String fechaFinModificada;
 	
 	ConvertirFechas convertirFechas = new ConvertirFechas();
 
+	private int codReserva;
 	private String fecInicioReserva;
 	private String fecFinalReserva;
+	
+	private boolean errorFecha = false;
 	
 	public void setControlador(Controlador controlador) {
 		this.controlador = controlador;
@@ -234,15 +239,21 @@ public class Form11DetallesReserva extends JFrame{
 
 			if(inicioReserva.isBefore(todaysDate)){
 				JOptionPane.showMessageDialog(null, "Error: La fecha de inicio de la reserva no puede ser anterior a la fecha de hoy.","Información",JOptionPane.INFORMATION_MESSAGE);
+				textFecInicial.setText(fecInicioReserva);
+				textFecFinal.setText(fecFinalReserva);
 				return;
 			}
 			if(inicioReserva.isAfter(finReserva)){
 				JOptionPane.showMessageDialog(null, "Error: La fecha de fin de la reserva no puede ser anterior a la fecha de inicio.","Información",JOptionPane.INFORMATION_MESSAGE);
+				textFecInicial.setText(fecInicioReserva);
+				textFecFinal.setText(fecFinalReserva);
 				return;
 			}
 
 			if(controlador.comprobarDisponibilidadVehiculo(matriculaCoche, fechaInicioSql, fechaFinalSql)==false){
 				JOptionPane.showMessageDialog(null, "Lo sentimos, el coche seleccionado no se encuentra disponible para las fechas que usted ha seleccionado.");
+				textFecInicial.setText(fecInicioReserva);
+				textFecFinal.setText(fecFinalReserva);
 			}else {
 				int codReserva = reserva.getCodigo();
 				controlador.modificarInvolucra(involucra, codReserva);
@@ -271,7 +282,6 @@ public class Form11DetallesReserva extends JFrame{
 		Cliente cliente = new Cliente();
 		Coche coche = new Coche();
 		
-		textCodReserva.setEnabled(false);
 		int codigo = Integer.parseInt(codigoReserva);
 		ReservaCompleta reservaCompleta = new ReservaCompleta();
 		controlador.buscarReserva(reservaCompleta, codigo);
@@ -329,7 +339,8 @@ public class Form11DetallesReserva extends JFrame{
 	
 	
 	private void Reserva(Reserva reserva) {
-		int codReserva = Integer.parseInt(textCodReserva.getText());
+		textCodReserva.setText(codigoReserva);
+		codReserva = Integer.parseInt(textCodReserva.getText());
 
 		modificarFechaInicio();
 		modificarFechaFin();
@@ -351,7 +362,7 @@ public class Form11DetallesReserva extends JFrame{
 		String[] arrCliente = infoCliente.split("  ");
 		nifInvolucra = arrCliente[0];
 
-		int codReserva = Integer.parseInt(textCodReserva.getText());
+		codReservaInvolucra = Integer.parseInt(textCodReserva.getText());
 		litros = Integer.parseInt(textLitros.getText());
 
 		/*System.out.println("MATRÍCULA: "+matriculaCoche);
@@ -361,7 +372,7 @@ public class Form11DetallesReserva extends JFrame{
 
 		involucra.setMatricula(matriculaCoche);
 		involucra.setCliente(nifInvolucra);
-		involucra.setReserva(codReserva);
+		involucra.setReserva(codReservaInvolucra);
 		involucra.setLitros(litros);
 	}
 	

@@ -88,7 +88,7 @@ public class Form02NuevaReserva extends JFrame {
 	public Form02NuevaReserva() {
 		System.out.println(todaysDate);
 		setTitle("Nueva Reserva");
-		setBounds(100, 100, 869, 455);
+		setBounds(100, 100, 869, 330);
 		getContentPane().setLayout(new BorderLayout());
 		setExtendedState(JFrame.NORMAL);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -158,52 +158,7 @@ public class Form02NuevaReserva extends JFrame {
 		comboBox_Clientes = new ModeloComboClientes();
 		comboBox_Clientes.setBounds(101, 22, 196, 20);
 		contentPanel.add(comboBox_Clientes);
-
-		JPanel panel_Cancelar_Reserva = new JPanel();
-		panel_Cancelar_Reserva.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Cancelar Reserva", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_Cancelar_Reserva.setBounds(12, 266, 827, 111);
-		contentPanel.add(panel_Cancelar_Reserva);
-		panel_Cancelar_Reserva.setLayout(null);
-
-		JLabel labelNifCliente = new JLabel("NIF Cliente:");
-		labelNifCliente.setBounds(51, 29, 66, 13);
-		panel_Cancelar_Reserva.add(labelNifCliente);
-
-		JLabel labelFechaInicio = new JLabel("Fecha Inicial (DD/MM/AAAA):");
-		labelFechaInicio.setBounds(50, 70, 164, 13);
-		panel_Cancelar_Reserva.add(labelFechaInicio);
-
-		textField_nif_cliente = new JTextField();
-		textField_nif_cliente.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_nif_cliente.setColumns(10);
-		textField_nif_cliente.setBounds(248, 20, 116, 22);
-		panel_Cancelar_Reserva.add(textField_nif_cliente);
-
-		textField_Fecha_Inicio = new JTextField();
-		textField_Fecha_Inicio.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_Fecha_Inicio.setColumns(10);
-		textField_Fecha_Inicio.setBounds(248, 67, 116, 22);
-		panel_Cancelar_Reserva.add(textField_Fecha_Inicio);
-
-		textField_Matricula_Coche = new JTextField();
-		textField_Matricula_Coche.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_Matricula_Coche.setColumns(10);
-		textField_Matricula_Coche.setBounds(636, 25, 116, 22);
-		panel_Cancelar_Reserva.add(textField_Matricula_Coche);
-
-		textField_fecha_final = new JTextField();
-		textField_fecha_final.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_fecha_final.setColumns(10);
-		textField_fecha_final.setBounds(636, 67, 116, 22);
-		panel_Cancelar_Reserva.add(textField_fecha_final);
-
-		JLabel lblNewLabel_2 = new JLabel("Matrícula Vehículo:");
-		lblNewLabel_2.setBounds(441, 29, 116, 13);
-		panel_Cancelar_Reserva.add(lblNewLabel_2);
-
-		JLabel labelFechaFin = new JLabel("Fecha Final (DD/MM/AAAAA):");
-		labelFechaFin.setBounds(441, 71, 174, 13);
-		panel_Cancelar_Reserva.add(labelFechaFin);
+		
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -228,7 +183,7 @@ public class Form02NuevaReserva extends JFrame {
 			}
 			JButton btnMasOpcionesReserva = new JButton("Mas Opciones");
 			btnMasOpcionesReserva.addActionListener(new MasOpcionesButtonActionListener());
-			btnMasOpcionesReserva.setBounds(700, 22, 100, 25);
+			btnMasOpcionesReserva.setBounds(700, 22, 130, 25);
 			contentPanel.add(btnMasOpcionesReserva);
 		}
 	}
@@ -260,10 +215,14 @@ public class Form02NuevaReserva extends JFrame {
 
 			if(controlador.comprobarDisponibilidadVehiculo(matriculaCoche, fechaInicioSql, fechaFinalSql)==false){
 				JOptionPane.showMessageDialog(null, "Lo sentimos, el coche seleccionado no se encuentra disponible para las fechas que usted ha seleccionado.");
+				return;
 			}else {
 				codigoReserva = reserva.getCodigo();
+				Date inicio = reserva.getFecInicio();
+				Date fin = reserva.getFecFinal();
 				controlador.insertarReserva(reserva, codigoReserva);
 				controlador.insertarInvolucra(involucra, codigoReserva);
+				controlador.reservarCoche(inicio, fin, matriculaCoche);
 				Form07MasOpcionesReserva masOpcionesReservas;
 				try {
 					masOpcionesReservas = new Form07MasOpcionesReserva();

@@ -44,7 +44,7 @@ public class Form11DetallesReserva extends JFrame{
 
 	Controlador controlador = new Controlador();
 
-	private JTextField textFecInicial;
+	/*private JTextField textFecInicial;
 	private JTextField textFecFinal;
 	private JTextField textLitros;
 	private JTextField textCodReserva;
@@ -69,7 +69,47 @@ public class Form11DetallesReserva extends JFrame{
 	private String fecInicioReserva;
 	private String fecFinalReserva;
 	
-	private boolean errorFecha = false;
+	private boolean errorFecha = false;*/
+	
+	private JTextField textFecInicial;
+	private JTextField textFecFinal;
+	private JTextField textLitros;
+	private JTextField textCodReserva;
+	
+	private ModeloComboClientes comboBox_Clientes;
+	private ModeloComboCoches comboBox_Coches;
+
+	private int codReserva;
+	private Date fechaInicio;
+	private Date fechaFinal;
+	private int litros;
+	
+	//Variables datos iniciales
+	private String codigoReserva;
+	private String fecInicioReserva;
+	private String fecFinalReserva;
+	private String litrosGasolina;
+	private Cliente item_cliente;
+	private Coche item_coche;
+	
+	//Variables datos modificados
+	private String codigoReservaNuevo;
+	private String fecInicioReservaNuevo;
+	private String fecFinalReservaNuevo;
+	private String litrosGasolinaNuevo;
+	private Cliente item_cliente_nuevo;
+	private Coche item_coche_nuevo;
+	
+	private String matriculaCoche;
+	private String nifInvolucra;
+	private int codReservaInvolucra;
+	
+	private String fecha;
+	private String fechaFinModificada;
+	
+	private boolean datosSinModificar = false;
+	
+	ConvertirFechas convertirFechas = new ConvertirFechas();
 	
 	public void setControlador(Controlador controlador) {
 		this.controlador = controlador;
@@ -214,6 +254,7 @@ public class Form11DetallesReserva extends JFrame{
 	
 	private class DeleteButtonActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
+		    textCodReserva.setText(codigoReserva);
 			int codigo = Integer.parseInt(codigoReserva);
 			try {
 				controlador.eliminarInvolucra(codigo);
@@ -227,6 +268,17 @@ public class Form11DetallesReserva extends JFrame{
 
 	private class ModifyButtonActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
+			comprobarDatosModificados();
+			if(datosSinModificar) {
+				JOptionPane.showMessageDialog(null, "No se ha modificado ningún dato.","Información",JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
+			
+			if(item_coche.equals(item_coche_nuevo)) {
+				String matricula = item_coche.getMatricula();
+				controlador.liberarCoche(matricula);
+			}
+			
 			Involucra involucra = new Involucra();
 			Reserva reserva = new Reserva();
 			Involucra(involucra);
@@ -254,13 +306,17 @@ public class Form11DetallesReserva extends JFrame{
 				JOptionPane.showMessageDialog(null, "Lo sentimos, el coche seleccionado no se encuentra disponible para las fechas que usted ha seleccionado.");
 				textFecInicial.setText(fecInicioReserva);
 				textFecFinal.setText(fecFinalReserva);
+				return;
 			}else {
 				int codReserva = reserva.getCodigo();
+				Date inicio = reserva.getFecInicio();
+				Date fin = reserva.getFecFinal();
 				controlador.modificarInvolucra(involucra, codReserva);
 				controlador.modificarReserva(reserva, codReserva);
-			}
+				controlador.reservarCoche(inicio, fin, matriculaCoche);
 			}
 		}
+	}
 
 
 	private class AtrasButtonActionListener implements ActionListener {
@@ -293,8 +349,8 @@ public class Form11DetallesReserva extends JFrame{
 		int precioCoche = reservaCompleta.getPrecioCoche();
 		String dniCliente = reservaCompleta.getDniCliente();
 		String nombreCliente = reservaCompleta.getNombreCliente();
-		String codigoReserva = String.valueOf(reservaCompleta.getCodigoReserva());
-		String litrosGasolina = String.valueOf(reservaCompleta.getLitrosGasolina());
+		codigoReserva = String.valueOf(reservaCompleta.getCodigoReserva());
+		litrosGasolina = String.valueOf(reservaCompleta.getLitrosGasolina());
 		fecInicioReserva = String.valueOf(reservaCompleta.getFecInicioReserva());
 		fecFinalReserva = String.valueOf(reservaCompleta.getFecFinalReserva());
 		
@@ -317,17 +373,17 @@ public class Form11DetallesReserva extends JFrame{
 		textLitros.setText(litrosGasolina);
 		
 		for (int i = 0; i < comboBox_Clientes.getItemCount(); i++) {
-		    Cliente item_combo = comboBox_Clientes.getItemAt(i);
-		    if(item_combo.equals(cliente)) {
-		    	comboBox_Clientes.setSelectedItem(item_combo);
+		    item_cliente = comboBox_Clientes.getItemAt(i);
+		    if(item_cliente.equals(cliente)) {
+		    	comboBox_Clientes.setSelectedItem(item_cliente);
 		    	break;
 		    }
 		}
 		
 		for (int i = 0; i < comboBox_Coches.getItemCount(); i++) {
-		    Coche item_combo = comboBox_Coches.getItemAt(i);
-		    if(item_combo.equals(coche)) {
-		    	comboBox_Coches.setSelectedItem(item_combo);
+		    item_coche = comboBox_Coches.getItemAt(i);
+		    if(item_coche.equals(coche)) {
+		    	comboBox_Coches.setSelectedItem(item_coche);
 		    	break;
 		    }
 		}
@@ -448,6 +504,20 @@ public class Form11DetallesReserva extends JFrame{
 		String anhoFin = String.valueOf(arrFecFinalModificado[2]);
 
 		fecFinalReserva = diaFin+"/"+mesFin+"/"+anhoFin;
+	}
+	
+	
+	private void comprobarDatosModificados() {
+		codigoReservaNuevo = textCodReserva.getText();
+		fecInicioReservaNuevo = textFecInicial.getText();
+		fecFinalReservaNuevo = textFecFinal.getText();
+		litrosGasolinaNuevo = textLitros.getText();
+		item_cliente_nuevo = (Cliente) comboBox_Clientes.getSelectedItem();
+		item_coche_nuevo = (Coche) comboBox_Coches.getSelectedItem();
+		
+		if(codigoReservaNuevo.equals(codigoReserva) && fecInicioReservaNuevo.equals(fecInicioReserva) && fecFinalReservaNuevo.equals(fecFinalReserva) && litrosGasolinaNuevo.equals(litrosGasolina) && item_cliente.equals(item_cliente_nuevo) && item_coche.equals(item_coche_nuevo)) {
+			datosSinModificar = true;
+		}
 	}
 
 

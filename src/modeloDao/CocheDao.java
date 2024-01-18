@@ -109,61 +109,97 @@ public class CocheDao {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		
 		}
 	}*/
 	
 	
-	public void reservarCoche(Date fecInicio, Date fecFin, String cadena) {
+	public void reservarCoche(Date fecInicio, Date fecFin, String matricula) {
 		LocalDate fechaActual = LocalDate.now();
-		String fecActual = String.valueOf(fechaActual);
+		
+		java.sql.Date fecActualSql = java.sql.Date.valueOf(fechaActual);
+		java.sql.Date fecInicioSql = new java.sql.Date(fecInicio.getTime());
+		java.sql.Date fecFinSql = new java.sql.Date(fecFin.getTime());
+		
+		/*String fecActual = String.valueOf(fechaActual);
 		String[] arrFechaActual = fecActual.split("-");
 		ArrayList<String> fechaOrdenada = new ArrayList<String>();
 		String elemento;
 		for(int i=arrFechaActual.length-1;i>=0;i--) {
 			elemento = arrFechaActual[i];
 			fechaOrdenada.add(elemento);
-		}
+		}*/
 		
-		Conexion conexion = new Conexion();
+		Conexion conexion = null;
+		
 		
 		String consulta = "UPDATE coches SET coDisponible= "
 				+ "(CASE "
-				+ "WHEN "+fechaActual+" BETWEEN "+fecInicio+" AND "+fecFin+" THEN 0"
+				+ "WHEN ? BETWEEN ? AND ? THEN 0"
 				+ " ELSE 1"
 				+ " END)"
-				+ " WHERE coMatricula = "+cadena+"";
+				+ " WHERE coMatricula = ?";
+		
+		/*String consulta = "UPDATE coches SET coDisponible = 0 "+
+		"JOIN Involucra ON coMatricula = inMatricula "+
+		"JOIN Reservas ON inReserva = reCodigo "+
+		"WHERE coMatricula = ? "+
+		"BETWEEN ? AND ?";*/
+		
 		PreparedStatement ps = null;
+		
 		try {
+			conexion = new Conexion();
 			ps = conexion.getConnection().prepareStatement(consulta);
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
-		;
-		try {
+			
+			ps.setDate(1,  fecActualSql);
+			ps.setDate(2,  fecInicioSql);
+			ps.setDate(3, fecFinSql);
+			ps.setString(4, matricula);
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			try {
+				if(ps!=null) {
+					ps.close();
+				}
+				if (conexion!=null){
+					conexion.desconectar();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}		
 	}
 
 
 	public void liberarCoche(String cadena) {
-		Conexion conexion = new Conexion();
-
+		Conexion conexion = null;
 		String consulta = "UPDATE coches SET coDisponible= 1"
 				+ " WHERE coMatricula = ?";
 		PreparedStatement ps = null;
 		try {
+			conexion = new Conexion();
 			ps = conexion.getConnection().prepareStatement(consulta);
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
-		try {
 			ps.executeUpdate();
-		} catch (SQLException e) {
+		} catch (SQLException e) { 
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			try {
+				if(ps!=null) {
+					ps.close();
+				}
+				if (conexion!=null){
+					conexion.desconectar();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	

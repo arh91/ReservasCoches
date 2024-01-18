@@ -57,7 +57,7 @@ public class Form01Inicial extends JFrame{
 		btnNuevaReserva.setBounds(57, 29, 140, 25);
 		getContentPane().add(btnNuevaReserva);
 		
-		JButton btnListadoReservas = new JButton("Listado Reserva");
+		JButton btnListadoReservas = new JButton("Listado Reservas");
 		btnListadoReservas.addActionListener(new BtnListadoReservasActionListener());
 		btnListadoReservas.setBounds(251, 29, 140, 25);
 		getContentPane().add(btnListadoReservas);

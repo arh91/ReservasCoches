@@ -389,15 +389,23 @@ public class ReservaDao {
 
 				if(fechaInicio.isAfter(fecha1)&&fechaInicio.isBefore(fecha2)){
 					contador++;
+					break;
 				}
 				if(fechaFin.isAfter(fecha1)&&fechaFin.isBefore(fecha2)){
 					contador++;
+					break;
 				}
 				if(fechaInicio.equals(fecha1)||fechaInicio.equals(fecha2)){
 					contador++;
+					break;
 				}
 				if(fechaFin.equals(fecha1)||fechaFin.equals(fecha2)){
 					contador++;
+					break;
+				}
+				if(fechaInicio.isBefore(fecha1)&&fechaFin.isAfter(fecha2)){
+					contador++;
+					break;
 				}
 			}
 		}catch(SQLException e) {

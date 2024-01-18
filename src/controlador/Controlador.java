@@ -195,6 +195,14 @@ public class Controlador {
 	public boolean comprobarDisponibilidadVehiculo(String matricula, Date inicioReserva, Date finReserva) {
 		return reservaDao.comprobarDisponibilidadVehiculo(matricula, inicioReserva, finReserva);
 	}
+	
+	public void reservarCoche(java.util.Date fecInicio, java.util.Date fecFin, String matricula) {
+		cocheDao.reservarCoche(fecInicio, fecFin, matricula);
+	}
+	
+	public void liberarCoche(String matricula) {
+		cocheDao.liberarCoche(matricula);
+	}
 
 	public boolean existeCliente(String codigo){
 		return involucraDao.existeCliente(codigo);

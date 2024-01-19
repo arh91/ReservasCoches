@@ -188,20 +188,16 @@ public class Controlador {
 
 	public void moverAHistorial() throws SQLException { reservaDao.moverAHistorial();}
 
-	public boolean existeMatriculaCoche(String codigo){
-		return cocheDao.existeMatriculaCoche(codigo);
-	}
-	
 	public boolean comprobarDisponibilidadVehiculo(String matricula, Date inicioReserva, Date finReserva) {
 		return reservaDao.comprobarDisponibilidadVehiculo(matricula, inicioReserva, finReserva);
 	}
 	
-	public void reservarCoche(java.util.Date fecInicio, java.util.Date fecFin, String matricula) {
-		cocheDao.reservarCoche(fecInicio, fecFin, matricula);
+	public boolean comprobarDisponibilidadVehiculoModificar(String matricula, Date inicioReserva, Date finReserva, int codigoReserva) {
+		return reservaDao.comprobarDisponibilidadVehiculoModificar(matricula, inicioReserva, finReserva, codigoReserva);
 	}
 	
-	public void liberarCoche(String matricula) {
-		cocheDao.liberarCoche(matricula);
+	public void reservarCoche(java.util.Date fecInicio, java.util.Date fecFin, String matricula) {
+		cocheDao.reservarCoche(fecInicio, fecFin, matricula);
 	}
 
 	public boolean existeCliente(String codigo){

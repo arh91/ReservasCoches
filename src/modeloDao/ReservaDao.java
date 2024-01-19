@@ -430,6 +430,96 @@ public class ReservaDao {
 		}
 	}
 
+	
+	public boolean comprobarDisponibilidadVehiculoModificar(String matricula, java.sql.Date fechaInicioDate, java.sql.Date fechaFinDate, int codigoReserva) {
+		Conexion conexion = null;
+		int contador=0;
+
+		String consulta = "select reCodigo, reFecInicio, reFecFinal"
+				+" from Reservas join Involucra on reCodigo = inReserva"
+				+" where inMatricula = ?";
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			int codigo = 0;
+			conexion = new Conexion();
+			ps = conexion.getConnection().prepareStatement(consulta);
+			ps.setString(1, matricula);
+
+			rs = ps.executeQuery();
+
+			while(rs.next()) {
+				codigo = rs.getInt("reCodigo");
+				Date fecha1Date = rs.getDate("reFecInicio");
+				Date fecha2Date = rs.getDate("reFecFinal");
+				java.sql.Date fecha1SqlDate = new java.sql.Date(fecha1Date.getTime());
+				java.sql.Date fecha2SqlDate = new java.sql.Date(fecha2Date.getTime());
+
+				LocalDate fechaInicio = fechaInicioDate.toLocalDate();
+				LocalDate fechaFin = fechaFinDate.toLocalDate();
+				LocalDate fecha1 = fecha1SqlDate.toLocalDate();
+				LocalDate fecha2 = fecha2SqlDate.toLocalDate();
+
+				if(fechaInicio.isAfter(fecha1)&&fechaInicio.isBefore(fecha2)&&codigo!=codigoReserva){
+					System.out.println("CODIGO ITERACION: "+codigo);
+					System.out.println("CODIGO RESERVA: "+codigoReserva);
+					contador++;
+					break;
+				}
+				if(fechaFin.isAfter(fecha1)&&fechaFin.isBefore(fecha2)&&codigo!=codigoReserva){
+					System.out.println("CODIGO ITERACION: "+codigo);
+					System.out.println("CODIGO RESERVA: "+codigoReserva);
+					contador++;
+					break;
+				}
+				if(fechaInicio.equals(fecha1)||fechaInicio.equals(fecha2)){
+					if(codigo!=codigoReserva) {
+						System.out.println("CODIGO ITERACION: "+codigo);
+						System.out.println("CODIGO RESERVA: "+codigoReserva);
+						contador++;
+					break;
+					}
+				}
+				if(fechaFin.equals(fecha1)||fechaFin.equals(fecha2)){
+					if(codigo!=codigoReserva) {
+						System.out.println("CODIGO ITERACION: "+codigo);
+						System.out.println("CODIGO RESERVA: "+codigoReserva);
+						contador++;
+					break;
+					}
+				}
+				if(fechaInicio.isBefore(fecha1)&&fechaFin.isAfter(fecha2)&&codigo!=codigoReserva){
+					System.out.println("CODIGO ITERACION: "+codigo);
+					System.out.println("CODIGO RESERVA: "+codigoReserva);
+					contador++;
+					break;
+				}
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(ps!=null) {
+					ps.close();
+				}
+				if (conexion!=null){
+					conexion.desconectar();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		if(contador==0){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	
 
 	public ArrayList<FilaReserva> ReservasMes(int mes) {
 		Conexion conexion = null;

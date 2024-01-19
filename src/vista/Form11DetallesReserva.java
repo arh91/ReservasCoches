@@ -44,33 +44,6 @@ public class Form11DetallesReserva extends JFrame{
 
 	Controlador controlador = new Controlador();
 
-	/*private JTextField textFecInicial;
-	private JTextField textFecFinal;
-	private JTextField textLitros;
-	private JTextField textCodReserva;
-	private ModeloComboClientes comboBox_Clientes;
-	private ModeloComboCoches comboBox_Coches;
-
-	private String codigoReserva;
-	private Date fechaInicio;
-	private Date fechaFinal;
-	
-	private int litros;
-	private String matriculaCoche;
-	private String nifInvolucra;
-	private int codReservaInvolucra;
-	
-	private String fecha;
-	private String fechaFinModificada;
-	
-	ConvertirFechas convertirFechas = new ConvertirFechas();
-
-	private int codReserva;
-	private String fecInicioReserva;
-	private String fecFinalReserva;
-	
-	private boolean errorFecha = false;*/
-	
 	private JTextField textFecInicial;
 	private JTextField textFecFinal;
 	private JTextField textLitros;
@@ -274,11 +247,6 @@ public class Form11DetallesReserva extends JFrame{
 				return;
 			}
 			
-			if(item_coche.equals(item_coche_nuevo)) {
-				String matricula = item_coche.getMatricula();
-				controlador.liberarCoche(matricula);
-			}
-			
 			Involucra involucra = new Involucra();
 			Reserva reserva = new Reserva();
 			Involucra(involucra);
@@ -302,7 +270,7 @@ public class Form11DetallesReserva extends JFrame{
 				return;
 			}
 
-			if(controlador.comprobarDisponibilidadVehiculo(matriculaCoche, fechaInicioSql, fechaFinalSql)==false){
+			if(controlador.comprobarDisponibilidadVehiculoModificar(matriculaCoche, fechaInicioSql, fechaFinalSql, codReserva)==false){
 				JOptionPane.showMessageDialog(null, "Lo sentimos, el coche seleccionado no se encuentra disponible para las fechas que usted ha seleccionado.");
 				textFecInicial.setText(fecInicioReserva);
 				textFecFinal.setText(fecFinalReserva);

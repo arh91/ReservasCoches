@@ -48,71 +48,6 @@ public class CocheDao {
 		return coches;
 	}
 	
-
-	public boolean existeMatriculaCoche(String codigo){
-		boolean existe = false;
-		Conexion conex= new Conexion();
-		String comprobarCodigosBD = "SELECT * FROM coches WHERE coMatricula = ?";
-
-		try {
-				PreparedStatement ps = conex.getConnection().prepareStatement(comprobarCodigosBD);
-				ps.setString(1, codigo);
-				ResultSet resultSet=ps.executeQuery();
-				if(resultSet.next()) {
-					existe = true;
-				} else {
-					existe = false;
-				}
-		} catch (SQLException e) {
-				System.out.println(e.getMessage());
-			}
-		return existe;
-	}
-
-
-	/*public void preguntarDisponibilidadCoche(String codigo, Coche coche) {
-		String valor;
-		Conexion conex = new Conexion();
-		boolean existe = false;
-		try {
-			String consulta = "SELECT coDisponible FROM coches WHERE coMatricula = ?";
-			PreparedStatement ps = conex.getConnection().prepareStatement(consulta);
-			ps.setString(1, codigo);
-			ResultSet res = ps.executeQuery();
-			while(res.next()){
-				existe=true;
-				coche.setDisponible(res.getBoolean(6));
-			}
-			res.close();
-			conex.desconectar();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
-	}*/
-
-	/*public void preguntarDisponibilidadCoche(Date fecInicio, Date fecFin) {
-		String valor;
-		Conexion conex = new Conexion();
-		boolean existe = false;
-		try {
-			String consulta = "SELECT coDisponible FROM coches WHERE coMatricula = ?";
-			PreparedStatement ps = conex.getConnection().prepareStatement(consulta);
-			ps.setString(1, codigo);
-			ResultSet res = ps.executeQuery();
-			while(res.next()){
-				existe=true;
-				coche.setDisponible(res.getBoolean(6));
-			}
-			res.close();
-			conex.desconectar();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		
-		}
-	}*/
-	
 	
 	public void reservarCoche(Date fecInicio, Date fecFin, String matricula) {
 		LocalDate fechaActual = LocalDate.now();
@@ -121,31 +56,15 @@ public class CocheDao {
 		java.sql.Date fecInicioSql = new java.sql.Date(fecInicio.getTime());
 		java.sql.Date fecFinSql = new java.sql.Date(fecFin.getTime());
 		
-		/*String fecActual = String.valueOf(fechaActual);
-		String[] arrFechaActual = fecActual.split("-");
-		ArrayList<String> fechaOrdenada = new ArrayList<String>();
-		String elemento;
-		for(int i=arrFechaActual.length-1;i>=0;i--) {
-			elemento = arrFechaActual[i];
-			fechaOrdenada.add(elemento);
-		}*/
-		
 		Conexion conexion = null;
-		
-		
+			
 		String consulta = "UPDATE coches SET coDisponible= "
 				+ "(CASE "
 				+ "WHEN ? BETWEEN ? AND ? THEN 0"
 				+ " ELSE 1"
 				+ " END)"
 				+ " WHERE coMatricula = ?";
-		
-		/*String consulta = "UPDATE coches SET coDisponible = 0 "+
-		"JOIN Involucra ON coMatricula = inMatricula "+
-		"JOIN Reservas ON inReserva = reCodigo "+
-		"WHERE coMatricula = ? "+
-		"BETWEEN ? AND ?";*/
-		
+				
 		PreparedStatement ps = null;
 		
 		try {
@@ -175,32 +94,4 @@ public class CocheDao {
 		}		
 	}
 
-
-	public void liberarCoche(String cadena) {
-		Conexion conexion = null;
-		String consulta = "UPDATE coches SET coDisponible= 1"
-				+ " WHERE coMatricula = ?";
-		PreparedStatement ps = null;
-		try {
-			conexion = new Conexion();
-			ps = conexion.getConnection().prepareStatement(consulta);
-			ps.executeUpdate();
-		} catch (SQLException e) { 
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			try {
-				if(ps!=null) {
-					ps.close();
-				}
-				if (conexion!=null){
-					conexion.desconectar();
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
-	
 }

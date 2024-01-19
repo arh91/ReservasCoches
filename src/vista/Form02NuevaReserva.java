@@ -24,6 +24,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 import java.awt.event.ActionEvent;
@@ -67,7 +69,11 @@ public class Form02NuevaReserva extends JFrame {
 	private JTextField textField_fecha_final;
 
 	private int codigoReservaCancelar;
-
+	
+	
+	private boolean fechaInicioCorrecta = false;
+	private boolean fechaFinCorrecta = false;
+	
 	public void setControlador(Controlador controlador) {
 		this.controlador = controlador;
 	}
@@ -168,12 +174,6 @@ public class Form02NuevaReserva extends JFrame {
 				okButton.addActionListener(new OkButtonActionListener());
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
-
-				JButton cancelButton = new JButton("Cancelar Reserva");
-				cancelButton.addActionListener(new CancelButtonActionListener());
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
-				getRootPane().setDefaultButton(okButton);
 			}
 			{
 				JButton btnAtras = new JButton("Atras");
@@ -194,6 +194,20 @@ public class Form02NuevaReserva extends JFrame {
 				JOptionPane.showMessageDialog(null, "Por favor, rellene todos los campos del panel.","Información",JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
+			if (validarFormatoFecha(textFecInicial.getText(), "dd/MM/yyyy")) {
+	            fechaInicioCorrecta = true;
+	        } else {
+	        	JOptionPane.showMessageDialog(null, "La fecha de inicio de reserva introducida no tiene el formato correcto de día/mes/año.","Información",JOptionPane.INFORMATION_MESSAGE);
+	            return;
+	        }
+			
+			if (validarFormatoFecha(textFecFinal.getText(), "dd/MM/yyyy")) {
+	            fechaFinCorrecta = true;
+	        } else {
+	        	JOptionPane.showMessageDialog(null, "La fecha de fin de reserva introducida no tiene el formato correcto de día/mes/año.","Información",JOptionPane.INFORMATION_MESSAGE);
+	            return;
+	        }
+			
 			Reserva reserva = new Reserva();
 			Involucra involucra = new Involucra();
 			Reserva(reserva);
@@ -233,24 +247,6 @@ public class Form02NuevaReserva extends JFrame {
 			}
 		}
 	}
-
-	private class CancelButtonActionListener implements ActionListener {
-		public void actionPerformed(ActionEvent arg0) {
-			datosCancelacion();
-			if (controlador.existeCliente(dniCliente) == false){
-				JOptionPane.showMessageDialog(null, "Ningún cliente con dni "+dniCliente+" ha hecho una reserva.","Información",JOptionPane.INFORMATION_MESSAGE);
-			}if (controlador.existeCoche(matriculaCoche) == false){
-				JOptionPane.showMessageDialog(null, "No existen reservas del coche con matrícula "+matriculaCoche+".","Información",JOptionPane.INFORMATION_MESSAGE);
-			}if (controlador.existeCliente(dniCliente) == true && controlador.existeCoche(matriculaCoche) == true) {
-				try {
-					controlador.eliminarInvolucra(codigoReservaCancelar);
-				} catch (SQLException e) {
-					throw new RuntimeException(e);
-				}
-				controlador.eliminarReserva(codigoReservaCancelar);
-			}
-			}
-		}
 
 
 	private class AtrasButtonActionListener implements ActionListener {
@@ -317,41 +313,7 @@ public class Form02NuevaReserva extends JFrame {
 		fechaFinModificada = anhoFin+"-"+mesFin+"-"+diaFin;
 	}
 
-	private void modificarFechaInicioCanc(){
-		fechaInicioModificadaCanc = textField_Fecha_Inicio.getText();
-		String[] arrFecInicialCanc = fechaInicioModificadaCanc.split("/");
-		String[] arrFecInicialModificadoCanc = new String[3];
-
-		int j=0;
-		for(int i= arrFecInicialCanc.length-1; i>=0; i--){
-			arrFecInicialModificadoCanc[j] = arrFecInicialCanc[i];
-			j++;
-		}
-
-		String diaInicio = String.valueOf(arrFecInicialModificadoCanc[2]);
-		String mesInicio = String.valueOf(arrFecInicialModificadoCanc[1]);
-		String anhoInicio = String.valueOf(arrFecInicialModificadoCanc[0]);
-
-		fechaInicioModificadaCanc = anhoInicio+"-"+mesInicio+"-"+diaInicio;
-	}
-
-	private void modificarFechaFinCanc(){
-		fechaFinModificadaCanc = textField_fecha_final.getText();
-		String[] arrFecFinalCanc = fechaFinModificadaCanc.split("/");
-		String[] arrFecFinalModificadoCanc = new String[3];
-
-		int k=0;
-		for(int i=arrFecFinalCanc.length-1; i>=0; i--){
-			arrFecFinalModificadoCanc[k] = arrFecFinalCanc[i];
-			k++;
-		}
-
-		String diaFin = String.valueOf(arrFecFinalModificadoCanc[2]);
-		String mesFin = String.valueOf(arrFecFinalModificadoCanc[1]);
-		String anhoFin = String.valueOf(arrFecFinalModificadoCanc[0]);
-
-		fechaFinModificadaCanc = anhoFin+"-"+mesFin+"-"+diaFin;
-	}
+	
 	private void Reserva(Reserva reserva) {
 		codigoReserva = Integer.parseInt(textCodReserva.getText());
 
@@ -365,6 +327,7 @@ public class Form02NuevaReserva extends JFrame {
 		reserva.setFecInicio(fechaInicio);
 		reserva.setFecFinal(fechaFinal);
 	}
+	
 
 	private void Involucra(Involucra involucra) {
 		String infoCoche = String.valueOf(comboBox_Coches.getSelectedItem());
@@ -378,31 +341,25 @@ public class Form02NuevaReserva extends JFrame {
 		codigoReserva = Integer.parseInt(textCodReserva.getText());
 		litros = Integer.parseInt(textLitros.getText());
 
-		/*System.out.println("MATRÍCULA: "+matriculaCoche);
-		System.out.println("DNI CLIENTE: "+nifInvolucra);
-		System.out.println("CÓDIGO RESERVA: "+codigoReserva);
-		System.out.println("LITROS: "+litros);*/
-
 		involucra.setMatricula(matriculaCoche);
 		involucra.setCliente(nifInvolucra);
 		involucra.setReserva(codigoReserva);
 		involucra.setLitros(litros);
 	}
+	
+	
+	public static boolean validarFormatoFecha(String fecha, String formato) {
+        SimpleDateFormat sdf = new SimpleDateFormat(formato);
+        sdf.setLenient(false);
 
-	private void datosCancelacion() {
-		Involucra involucra = new Involucra();
-		dniCliente = textField_nif_cliente.getText();
-		matriculaCoche = textField_Matricula_Coche.getText();
-
-		modificarFechaInicioCanc();
-		modificarFechaFinCanc();
-
-		fecInicioCancelar = convertirFechas.convertirStringDate(fechaInicioModificadaCanc);
-		fecFinalCancelar = convertirFechas.convertirStringDate(fechaFinModificadaCanc);
-
-		controlador.obtenerCodigoReserva(involucra, matriculaCoche);
-
-		codigoReservaCancelar = involucra.getReserva();
-	}
+        try {
+            Date date = sdf.parse(fecha);
+            // Si no ocurre una excepción, significa que la cadena tiene el formato correcto
+            return true;
+        } catch (ParseException e) {
+            // La excepción indica que la cadena no tiene el formato correcto
+            return false;
+        }
+    }
 
 }

@@ -8,6 +8,8 @@ import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -81,6 +83,8 @@ public class Form11DetallesReserva extends JFrame{
 	private String fechaFinModificada;
 	
 	private boolean datosSinModificar = false;
+	private boolean fechaInicioCorrecta = false;
+	private boolean fechaFinCorrecta = false;
 	
 	ConvertirFechas convertirFechas = new ConvertirFechas();
 	
@@ -246,6 +250,25 @@ public class Form11DetallesReserva extends JFrame{
 				JOptionPane.showMessageDialog(null, "No se ha modificado ningún dato.","Información",JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
+			
+			if(textFecInicial.getText().isEmpty() || textFecFinal.getText().isEmpty() || textCodReserva.getText().isEmpty() || textLitros.getText().isEmpty()){
+				JOptionPane.showMessageDialog(null, "Por favor, rellene todos los campos del panel.","Información",JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
+			
+			if (validarFormatoFecha(textFecInicial.getText(), "dd/MM/yyyy")) {
+	            fechaInicioCorrecta = true;
+	        } else {
+	        	JOptionPane.showMessageDialog(null, "La fecha de inicio de reserva introducida no tiene el formato correcto de día/mes/año.","Información",JOptionPane.INFORMATION_MESSAGE);
+	            return;
+	        }
+			
+			if (validarFormatoFecha(textFecFinal.getText(), "dd/MM/yyyy")) {
+	            fechaFinCorrecta = true;
+	        } else {
+	        	JOptionPane.showMessageDialog(null, "La fecha de fin de reserva introducida no tiene el formato correcto de día/mes/año.","Información",JOptionPane.INFORMATION_MESSAGE);
+	            return;
+	        }
 			
 			Involucra involucra = new Involucra();
 			Reserva reserva = new Reserva();
@@ -487,6 +510,21 @@ public class Form11DetallesReserva extends JFrame{
 			datosSinModificar = true;
 		}
 	}
+	
+	
+	public static boolean validarFormatoFecha(String fecha, String formato) {
+        SimpleDateFormat sdf = new SimpleDateFormat(formato);
+        sdf.setLenient(false);
+
+        try {
+            Date date = sdf.parse(fecha);
+            // Si no ocurre una excepción, significa que la cadena tiene el formato correcto
+            return true;
+        } catch (ParseException e) {
+            // La excepción indica que la cadena no tiene el formato correcto
+            return false;
+        }
+    }
 
 
 }

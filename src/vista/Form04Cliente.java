@@ -33,6 +33,7 @@ public class Form04Cliente extends JFrame{
 	private String direccion;
 	private int telefono;
 	
+	private boolean dniCorrecto = false;
 	
 	Cliente cliente = new Cliente();
 	
@@ -164,6 +165,17 @@ public class Form04Cliente extends JFrame{
 	
 	private class BtnInsertarActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
+			if(textField_nif.getText().isEmpty() || textField_nombre.getText().isEmpty() || textField_primer_apellido.getText().isEmpty() || textField_calle.getText().isEmpty() || textField_numero.getText().isEmpty() || textField_localidad.getText().isEmpty() || textField_telefono.getText().isEmpty()){
+				JOptionPane.showMessageDialog(null, "Por favor, rellene todos los campos.","Información",JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
+			
+			if (validarFormatoDNI(textField_nif.getText())) {
+	            dniCorrecto = true;
+	        } else {
+	        	JOptionPane.showMessageDialog(null, "El dni introducido no tiene el formato correcto.","Información",JOptionPane.INFORMATION_MESSAGE);
+	        	return;
+	        }
 			insertarCliente();
 		}
 	}
@@ -206,4 +218,37 @@ public class Form04Cliente extends JFrame{
 		String dniCliente = cliente.getNif();
 		controlador.insertarCliente(cliente, dniCliente);
 	}
+	
+	
+	 public static boolean validarFormatoDNI(String dni) {
+	        // Verifica que la longitud del DNI sea correcta
+	        if (dni.length() != 9) {
+	            return false;
+	        }
+
+	        // Extrae los dígitos y la letra
+	        String digitos = dni.substring(0, 8);
+	        char letra = dni.charAt(8);
+
+	        try {
+	            // Verifica que los primeros 8 caracteres sean dígitos
+	            Integer.parseInt(digitos);
+
+	            // Calcula la letra esperada
+	            char letraCalculada = calcularLetraDNI(digitos);
+
+	            // Compara la letra calculada con la letra proporcionada
+	            return letra == letraCalculada;
+	        } catch (NumberFormatException e) {
+	            // Se lanzará una excepción si los primeros 8 caracteres no son números
+	            return false;
+	        }
+	    }
+
+	    public static char calcularLetraDNI(String digitos) {
+	        String caracteres = "TRWAGMYFPDXBNJZSQVHLCKE";
+	        int numeroDNI = Integer.parseInt(digitos);
+	        int indiceLetra = numeroDNI % 23;
+	        return caracteres.charAt(indiceLetra);
+	    }
 }
